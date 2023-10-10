@@ -27,6 +27,8 @@ model companies {
   id              Int     @id @default(autoincrement())
   company_name    String? @unique(map: "company_name") @db.VarChar(255)
   company_website String? @db.VarChar(255)
+  created_at      DateTime? @db.Timestamp(0)
+  updated_at      DateTime? @db.Timestamp(0)
 }
 
 model jobs {

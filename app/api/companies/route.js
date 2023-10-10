@@ -1,36 +1,32 @@
 import { NextResponse } from 'next/server';
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const companyServices = require('../../services/companyServices');
 
 const GET = async () => {
-    try {
-        const allCompanies = await prisma.companies.findMany();
+    const responseData = await companyServices.getAllCompanies();
+    if (responseData.status === 'success') {
         return NextResponse.json(
-            { companies: allCompanies },
-            { status: 200 }
+            { companies: responseData.json.message },
+            { status: responseData.statusCode }
         );
-    } catch (e) {
+    } else {
         return NextResponse.json(
-            { error: e.message },
-            { status: 500 }
+            { error: responseData.json.message },
+            { status: responseData.statusCode }
         );
     }
 };
 
 const POST = async (req) => {
-    const json = await req.json();
-    try {
-        const created = await prisma.companies.create({
-            data: json,
-        });
-        return NextResponse.json(created, {
-            status: 201,
-        });
-    } catch (e) {
+    const responseData = await companyServices.createCompany(req);
+    if (responseData.status === 'success') {
         return NextResponse.json(
-            { error: e.message },
-            { status: 500 }
+            { company: responseData.json.message },
+            { status: responseData.statusCode }
+        );
+    } else {
+        return NextResponse.json(
+            { error: responseData.json.message },
+            { status: responseData.statusCode }
         );
     }
 };
