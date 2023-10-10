@@ -27,8 +27,8 @@ model companies {
   id              Int     @id @default(autoincrement())
   company_name    String? @unique(map: "company_name") @db.VarChar(255)
   company_website String? @db.VarChar(255)
-  created_at      DateTime? @db.Timestamp(0)
-  updated_at      DateTime? @db.Timestamp(0)
+  created_at      DateTime? @default(now())
+  updated_at      DateTime? @updatedAt
 }
 
 model jobs {
@@ -39,8 +39,8 @@ model jobs {
   job_link     String?   @db.VarChar(255)
   resume_link  String?   @db.VarChar(255)
   job_work_env String?   @db.VarChar(255)
-  created_at   DateTime? @db.Timestamp(0)
-  updated_at   DateTime? @db.Timestamp(0)
+  created_at   DateTime? @default(now())
+  updated_at   DateTime? @updatedAt
 }
 
 model users {
@@ -49,6 +49,6 @@ model users {
   last_name  String?  @db.VarChar(255)
   email      Bytes    @db.VarBinary(255)
   password   String   @db.VarChar(255)
-  created_at DateTime @db.Timestamp(0)
-  updated_at DateTime @db.Timestamp(0)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 }
