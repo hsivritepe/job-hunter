@@ -72,6 +72,7 @@ const actionTypes = [
     'Send an email to ask for feedback',
     'Get a response for the next step',
     'Do the interview',
+    'Take note',
 ];
 
 const jobs = [

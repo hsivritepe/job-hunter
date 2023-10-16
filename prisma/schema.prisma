@@ -20,7 +20,6 @@ model actions {
   user_id        Int
   job_id         Int
   action_type_id Int
-  action_desc    String?   @db.VarChar(255)
   created_at     DateTime? @default(now())
   updated_at     DateTime? @updatedAt
 }
