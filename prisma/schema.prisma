@@ -8,9 +8,11 @@ datasource db {
 }
 
 model action_types {
-  id                Int     @id @default(autoincrement())
-  action_type_title String? @db.VarChar(255)
-  action_type_desc  String? @db.VarChar(255)
+  id                Int       @id @default(autoincrement())
+  action_type_title String?   @db.VarChar(255)
+  action_type_desc  String?   @db.VarChar(255)
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 }
 
 model actions {
@@ -19,8 +21,8 @@ model actions {
   job_id         Int
   action_type_id Int
   action_desc    String?   @db.VarChar(255)
-  created_at     DateTime? @db.Timestamp(0)
-  updated_at     DateTime? @db.Timestamp(0)
+  created_at     DateTime? @default(now())
+  updated_at     DateTime? @updatedAt
 }
 
 model companies {
@@ -38,17 +40,18 @@ model jobs {
   job_location String?   @db.VarChar(255)
   job_link     String?   @db.VarChar(255)
   resume_link  String?   @db.VarChar(255)
+  cover_link   String?   @db.VarChar(255)
   job_work_env String?   @db.VarChar(255)
   created_at   DateTime? @default(now())
   updated_at   DateTime? @updatedAt
 }
 
 model users {
-  id         Int      @id @default(autoincrement())
-  first_name String?  @db.VarChar(255)
-  last_name  String?  @db.VarChar(255)
-  email      Bytes    @db.VarBinary(255)
-  password   String   @db.VarChar(255)
+  id         Int       @id @default(autoincrement())
+  first_name String?   @db.VarChar(255)
+  last_name  String?   @db.VarChar(255)
+  email      String    @db.VarChar(255)
+  password   String    @db.VarChar(255)
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 }

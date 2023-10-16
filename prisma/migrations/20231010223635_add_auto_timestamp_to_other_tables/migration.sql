@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE `action_types` ADD COLUMN `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    ADD COLUMN `updated_at` DATETIME(3) NULL;
+
+-- AlterTable
+ALTER TABLE `actions` MODIFY `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    MODIFY `updated_at` DATETIME(3) NULL;
