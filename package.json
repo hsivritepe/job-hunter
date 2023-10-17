@@ -16,6 +16,7 @@
     "joi": "^17.11.0",
     "mysql2": "^3.6.1",
     "next": "13.5.4",
+    "next-auth": "^4.23.2",
     "next-swagger-doc": "^0.4.0",
     "react": "^18",
     "react-dom": "^18",
