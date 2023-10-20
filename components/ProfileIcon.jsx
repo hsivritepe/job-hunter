@@ -4,6 +4,7 @@ import { signIn, useSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import Link from 'next/link';
 
 export default function ProfileIcon() {
     const { data: session, status } = useSession();
@@ -28,7 +29,13 @@ export default function ProfileIcon() {
                     className="rounded-full"
                     alt="Profile Picture"
                 />
-                <button onClick={() => signOut()}>Sign Out</button>
+                <Link
+                    href={''}
+                    className="pt-1"
+                    onClick={() => signOut()}
+                >
+                    Sign Out
+                </Link>
             </div>
         );
     }

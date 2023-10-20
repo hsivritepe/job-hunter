@@ -4,6 +4,9 @@ import LoginButton from '../../components/LoginButton';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export default function LoginPage() {
     const { data: session, status } = useSession();
@@ -11,6 +14,21 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (status === 'authenticated') {
+            const getUser = async () => {
+                const user = await prisma.user.findUnique({
+                    where: {
+                        email: session.user.email,
+                    },
+                });
+                if (!user) {
+                    await prisma.user.create({
+                        data: {
+                            email: session.user.email,
+                            name: session.user.name,
+                        },
+                    });
+                }
+            };
             router.push('/tilt');
         } else {
             router.push('/login');
