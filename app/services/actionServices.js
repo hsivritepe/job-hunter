@@ -1,21 +1,22 @@
-import { jobSchema } from '../helpers/validationSchema';
+import { actionSchema } from '../helpers/validationSchema';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function getAllJobs() {
+export async function getAllActions() {
     try {
-        const jobs = await prisma.jobs.findMany({
+        const actions = await prisma.actions.findMany({
             include: {
                 user: true,
-                company: true,
+                job: true,
+                action_type: true,
             },
         });
         return {
             status: 'success',
             statusCode: 200,
             json: {
-                message: jobs,
+                message: actions,
             },
         };
     } catch (e) {
@@ -29,11 +30,11 @@ export async function getAllJobs() {
     }
 }
 
-export async function createJob(request) {
+export async function createAction(request) {
     try {
         const json = await request.json();
-        const validated = await jobSchema.validateAsync(json);
-        const created = await prisma.jobs.create({
+        const validated = await actionSchema.validateAsync(json);
+        const created = await prisma.actions.create({
             data: validated,
         });
         return {
@@ -54,28 +55,29 @@ export async function createJob(request) {
     }
 }
 
-export async function getJob(id) {
+export async function getAction(id) {
     try {
-        const job = await prisma.jobs.findUnique({
+        const action = await prisma.actions.findUnique({
             where: {
                 id: parseInt(id),
             },
             include: {
                 user: true,
-                company: true,
+                job: true,
+                action_type: true,
             },
         });
         return {
             status: 'success',
             statusCode: 200,
             json: {
-                message: job,
+                message: action,
             },
         };
     } catch (e) {
         return {
             status: 'error',
-            statusCode: 500,
+            statusCode: 501,
             json: {
                 message: e.message,
             },
@@ -83,11 +85,11 @@ export async function getJob(id) {
     }
 }
 
-export async function updateJob(body, id) {
+export async function updateAction(body, id) {
     try {
         const json = await body.json();
-        const validated = await jobSchema.validateAsync(json);
-        const updated = await prisma.jobs.update({
+        const validated = await actionSchema.validateAsync(json);
+        const updated = await prisma.actions.update({
             where: {
                 id: parseInt(id),
             },
@@ -111,9 +113,9 @@ export async function updateJob(body, id) {
     }
 }
 
-export async function deleteJob(id) {
+export async function deleteAction(id) {
     try {
-        const deleted = await prisma.jobs.delete({
+        const deleted = await prisma.actions.delete({
             where: {
                 id: parseInt(id),
             },

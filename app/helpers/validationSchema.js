@@ -20,7 +20,17 @@ const jobSchema = Joi.object({
     updated_at: Joi.date().iso(),
 });
 
+// Actions validation schema
+const actionSchema = Joi.object({
+    user_id: Joi.number().required(),
+    job_id: Joi.number().required(),
+    action_type_id: Joi.number().required(),
+    created_at: Joi.date().iso(),
+    updated_at: Joi.date().iso(),
+});
+
 module.exports = {
     companySchema,
     jobSchema,
+    actionSchema,
 };

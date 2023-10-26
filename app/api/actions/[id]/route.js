@@ -1,11 +1,13 @@
 const { NextResponse } = require('next/server');
-const jobServices = require('../../../services/jobServices');
+const actionServices = require('../../../services/actionServices');
 
 export async function GET(request, params) {
-    const responseData = await jobServices.getJob(params.params.id);
+    const responseData = await actionServices.getAction(
+        params.params.id
+    );
     if (responseData.status === 'success') {
         return NextResponse.json(
-            { job: responseData.json.message },
+            { action: responseData.json.message },
             { status: responseData.statusCode }
         );
     } else {
@@ -17,13 +19,13 @@ export async function GET(request, params) {
 }
 
 export async function PUT(request, params) {
-    const responseData = await jobServices.updateJob(
+    const responseData = await actionServices.updateAction(
         request,
         params.params.id
     );
     if (responseData.status === 'success') {
         return NextResponse.json(
-            { job: responseData.json.message },
+            { action: responseData.json.message },
             { status: responseData.statusCode }
         );
     } else {
@@ -35,12 +37,12 @@ export async function PUT(request, params) {
 }
 
 export async function DELETE(request, params) {
-    const responseData = await jobServices.deleteJob(
+    const responseData = await actionServices.deleteAction(
         params.params.id
     );
     if (responseData.status === 'success') {
         return NextResponse.json(
-            { job: responseData.json.message },
+            { action: responseData.json.message },
             { status: responseData.statusCode }
         );
     } else {
