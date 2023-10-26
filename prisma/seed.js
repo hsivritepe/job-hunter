@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const companies = [
+const companyNames = [
     'CSC Generation',
     'Amazon',
     'Storm2',
@@ -64,6 +64,7 @@ const companies = [
     'Binance.us',
     'Airble',
 ];
+
 const actionTypes = [
     'Apply to the job',
     'Send a follow up email',
@@ -77,7 +78,7 @@ const actionTypes = [
 
 const jobs = [
     {
-        company_id: 'CSC Generation',
+        company_name: 'CSC Generation',
         job_title: 'Senior Full Stack Engineer',
         resume_link:
             'https://docs.google.com/document/d/1IMQEv80AIOrEGCYa7saInOYWVz7CdmsCtkBhQlsW5qI/edit',
@@ -86,14 +87,14 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Amazon',
+        company_name: 'Amazon',
         job_title: 'SDE II Event - Vancouver, Amazon Store',
         resume_link: '',
         job_link: 'SDE II Event - Vancouver, Amazon Stores',
         cover_link: '',
     },
     {
-        company_id: 'Storm2',
+        company_name: 'Storm2',
         job_title: 'Full Stack Engineer',
         resume_link:
             'https://docs.google.com/document/d/1GxnkvkP6uyJXfKTX2IhMlTdItPgIQxmM8kgZbhPRM4M/edit',
@@ -102,7 +103,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Push',
+        company_name: 'Push',
         job_title: 'Full Stack Software Engineer, Integrations',
         resume_link:
             'https://docs.google.com/document/d/1ZvfgQobQjsqsZAjlJs6Gd6gMhG2ThAhyM0FLnfc-uaQ/edit',
@@ -111,7 +112,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Commit',
+        company_name: 'Commit',
         job_title: 'Full Stack Engineer [Remote - US + Canada]',
         resume_link:
             'https://docs.google.com/document/d/1nD2rclJMm_XUAVV7gRtRmaUR8PrwUj72F52Ua5v-zlE/edit',
@@ -120,7 +121,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Slack',
+        company_name: 'Slack',
         job_title:
             'Software Engineer, Backend - Slack (Multiple Levels)',
         resume_link:
@@ -130,7 +131,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'MVP Talent Corp',
+        company_name: 'MVP Talent Corp',
         job_title: 'Senior Frontend Developer',
         resume_link:
             'https://docs.google.com/document/d/1fjWkIjuQTxMteiPMAVX1GTD0tJ5EjZt0YVUcy8UzJ5w/edit#heading=h.3znysh7',
@@ -138,7 +139,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Bounce',
+        company_name: 'Bounce',
         job_title: 'Senior Frontend Software Engineer',
         resume_link:
             '20230821-Hakan-Sivritepe-Bounce-Senior Frontend Software Engineer',
@@ -146,7 +147,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Synergy Loft Inc.',
+        company_name: 'Synergy Loft Inc.',
         job_title: 'Full Stack Engineer',
         resume_link:
             'https://docs.google.com/document/d/1AwwmmZ488xus-DzhCdmp1NSH6_TnoRjxxq7Wg0nKuok/edit',
@@ -155,7 +156,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Sage Recruiting',
+        company_name: 'Sage Recruiting',
         job_title: 'Senior Full Stack Engineer',
         resume_link:
             'https://docs.google.com/document/d/1AwwmmZ488xus-DzhCdmp1NSH6_TnoRjxxq7Wg0nKuok/edit',
@@ -164,7 +165,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Busbud',
+        company_name: 'Busbud',
         job_title: 'Software Developer - Platform',
         resume_link:
             'https://docs.google.com/document/d/1AwwmmZ488xus-DzhCdmp1NSH6_TnoRjxxq7Wg0nKuok/edit#heading=h.ytp7hcl6fzta',
@@ -173,7 +174,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'StackAdapt',
+        company_name: 'StackAdapt',
         job_title:
             'Senior Full Stack Engineer - Internal Tools & Billing',
         resume_link:
@@ -183,7 +184,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Affinity.co',
+        company_name: 'Affinity.co',
         job_title: 'Senior Full Stack Engineer',
         resume_link:
             'https://docs.google.com/document/d/1YRYsP0DC2hhxzqe93T9egoknlbwQFR8JmRQcYdyE2Qs/edit',
@@ -192,7 +193,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Applied Systems',
+        company_name: 'Applied Systems',
         job_title: 'Full Stack Developer (React.js)',
         resume_link:
             'https://docs.google.com/document/d/1IkBTmm3sU5cWHQuop91xaXjn-RTMV0CWRIGEIVKbpFA/edit',
@@ -201,7 +202,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Zapier',
+        company_name: 'Zapier',
         job_title: 'Sr. Engineer, Full Stack (Identity)',
         resume_link:
             'https://docs.google.com/document/d/1ANzR1JLbXUEQ0fLIc0NeKVymr7VmUfFPbyROeXXtPAk/edit',
@@ -210,7 +211,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'CapIntel',
+        company_name: 'CapIntel',
         job_title: 'Senior Software Developer - Frontend',
         resume_link:
             'https://docs.google.com/document/d/1XZxBYAnmcWrMjiYv3NYRU8Mr3Fe3TKsv1sEPQI-ous8/edit#heading=h.lnxbz9',
@@ -219,7 +220,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Pagefreezer',
+        company_name: 'Pagefreezer',
         job_title: 'Software Engineer, Fullstack',
         resume_link:
             'https://docs.google.com/document/d/140DJY-CAj0YnYyLTANsjtaSiUgcYp14Nm0sThOKYMeQ/edit',
@@ -228,7 +229,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Storm4 - AgTech',
+        company_name: 'Storm4 - AgTech',
         job_title: 'Full Stack Developer',
         resume_link:
             'https://docs.google.com/document/d/1f6pR4noIqq5PPG-VBbDSv-bx-gBfoVgBi5X40pej8cY/edit#heading=h.lnxbz9',
@@ -237,7 +238,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'NextPath Career Partners',
+        company_name: 'NextPath Career Partners',
         job_title:
             'Full Stack Engineer – React / Next.js – REMOTE (3312)',
         resume_link:
@@ -247,7 +248,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Chime',
+        company_name: 'Chime',
         job_title: 'Software Developer',
         resume_link:
             'https://docs.google.com/document/d/1gGSza6Y4PLfDvRXuj4t-T75KxJtzHRZ0DvsDT_z9824/edit',
@@ -256,7 +257,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Mosey',
+        company_name: 'Mosey',
         job_title: 'Senior Full Stack Software Engineer',
         resume_link:
             'https://docs.google.com/document/d/1G70rin5BJAMciD-VswqV31Cbl-fVjn1Ns0eCYYhmvHU/edit',
@@ -265,7 +266,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'ETM Core',
+        company_name: 'ETM Core',
         job_title: 'Frontend Developer - Remote',
         resume_link:
             'https://docs.google.com/document/d/1i1qE7bUK8Wm5yPQaEIUTxoKX9ZL8Rv7qe1-5SWtwLEI/edit#heading=h.1fob9te',
@@ -274,7 +275,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Stan',
+        company_name: 'Stan',
         job_title: 'Full Stack Software Engineer',
         resume_link:
             'https://docs.google.com/document/d/1_nWfESeWnVc_i2zxUnjSLZK-BsEaWtt5ysFJug3B4co/edit',
@@ -283,7 +284,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Shakepay',
+        company_name: 'Shakepay',
         job_title: 'Senior Full Stack Developer (Remote - Canada)',
         resume_link:
             '20230823-Hakan-Sivritepe-Shakepay-Senior-Full-Stack-Developer-Remote-Canada',
@@ -292,7 +293,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Basetwo AI',
+        company_name: 'Basetwo AI',
         job_title: 'Software Engineer, Full Stack',
         resume_link:
             'https://docs.google.com/document/d/1BGeCm_Td8FdjaOa9ca6tyGbFTmNOTqt6gDCZnlMmg9Q/edit',
@@ -301,7 +302,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Clipboard Health',
+        company_name: 'Clipboard Health',
         job_title: 'Full-Stack Software Engineer',
         resume_link:
             '20230823-Hakan-Sivritepe-Clipboard-Health-Full-Stack-Software-Engineer',
@@ -310,7 +311,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Lululemon',
+        company_name: 'Lululemon',
         job_title:
             'Senior Full Stack Engineer (Front End focus) - lululemon Studio (Hybrid, Vancouver)',
         resume_link:
@@ -320,7 +321,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Sonos',
+        company_name: 'Sonos',
         job_title: 'Software Engineer - Content Systems',
         resume_link:
             '20230824-Hakan-Sivritepe-Software-Engineer-Content-Systems',
@@ -329,7 +330,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id:
+        company_name:
             'BC Public Service · British Columbia, Canada (Remote)',
         job_title: 'Full Stack Developer',
         resume_link:
@@ -339,7 +340,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Konnect Way',
+        company_name: 'Konnect Way',
         job_title: 'Senior React + PHP Developer',
         resume_link:
             'https://docs.google.com/document/d/12TJszmIIe32zdwDUl0WveA21Fpyajbk8qjSZ44SrcXA/edit#heading=h.3znysh7',
@@ -348,7 +349,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'd1g1t',
+        company_name: 'd1g1t',
         job_title: 'Senior Frontend Engineer',
         resume_link:
             'https://docs.google.com/document/d/1J6zr9ZbyaM20RjBEgS0ESYkXTQJL_lNhx44uTgzxNfI/edit',
@@ -357,7 +358,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Roofr',
+        company_name: 'Roofr',
         job_title: 'Senior Frontend Engineer',
         resume_link:
             '20230828-Hakan-Sivritepe-Roofr-Senior-Frontend-Engineer',
@@ -366,7 +367,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Gigster Network',
+        company_name: 'Gigster Network',
         job_title: 'Senior Front-End Developer',
         resume_link:
             '20230901-Hakan-Sivritepe-Gigster-Network-Senior-Front-End-Developer',
@@ -375,7 +376,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Swim Recruiting',
+        company_name: 'Swim Recruiting',
         job_title: 'PHP Software Engineer',
         resume_link:
             '20230901-Hakan-Sivritepe-Swim-Recruiting-PHP-Software-Developer',
@@ -384,7 +385,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Adobe',
+        company_name: 'Adobe',
         job_title: 'Senior Software Engineer',
         resume_link:
             '20230901-Hakan-Sivritepe-Adobe-Senior-Software-Engineer',
@@ -393,7 +394,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Pani',
+        company_name: 'Pani',
         job_title: 'Full-Stack Developer',
         resume_link:
             '20230901-Hakan-Sivritepe-Pani-Full-Stack-Developer',
@@ -402,7 +403,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'PYMNTS',
+        company_name: 'PYMNTS',
         job_title: 'Full-Stack React/Node.js Developer',
         resume_link:
             '20230906-Hakan-Sivritepe-PYMNTS-Full-Stack React/Node.js-Developer',
@@ -411,7 +412,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Milk Moovement',
+        company_name: 'Milk Moovement',
         job_title: 'Full Stack Developer II',
         resume_link:
             '20230908-Hakan-Sivritepe-Milk-Moovement-Full-Stack-Developer-II',
@@ -420,7 +421,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Klue',
+        company_name: 'Klue',
         job_title: 'Intermediate Frontend Engineer ',
         resume_link:
             '20230908-Hakan-Sivritepe-Klue-Intermediate-Frontend-Engineer ',
@@ -429,7 +430,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: "Let's Roam",
+        company_name: "Let's Roam",
         job_title: 'Junior & Mid-Level Full Stack Developer',
         resume_link:
             '20230911-Hakan-Sivritepe-Lets-Roam-Junior-Mid-Full-Stack',
@@ -438,7 +439,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Pixieset',
+        company_name: 'Pixieset',
         job_title: 'Software Developer, Full Stack',
         resume_link: '20230911-Hakan-Sivritepe-Pixieset-Full-Stack',
         job_link:
@@ -446,7 +447,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Pixieset',
+        company_name: 'Pixieset',
         job_title: 'Software Developer, Full Stack (Growth)',
         resume_link: '20230911-Hakan-Sivritepe-Pixieset-Full-Stack',
         job_link:
@@ -454,7 +455,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Shakepay',
+        company_name: 'Shakepay',
         job_title:
             'Intermediate Full Stack Developer (Remote - Canada)',
         resume_link:
@@ -464,7 +465,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Pattern Learning AI',
+        company_name: 'Pattern Learning AI',
         job_title: 'Entry-Level React Developer - US/Canada',
         resume_link:
             '20230912-Hakan-Sivritepe-Pattern-Learning-Entry-Level-React-Dev',
@@ -473,7 +474,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Asana',
+        company_name: 'Asana',
         job_title: 'Software Engineer, Product',
         resume_link: 'Easy Apply - Linkedin with Master resume',
         job_link:
@@ -481,14 +482,14 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Clevertech',
+        company_name: 'Clevertech',
         job_title: 'Senior Full Stack Engineer - Javascript',
         resume_link: '',
         job_link: '',
         cover_link: '',
     },
     {
-        company_id: 'Randstad',
+        company_name: 'Randstad',
         job_title: 'Front End x 2 - Remote - 4 months',
         resume_link:
             'https://docs.google.com/document/d/1AwwmmZ488xus-DzhCdmp1NSH6_TnoRjxxq7Wg0nKuok/edit',
@@ -497,7 +498,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Fullscript',
+        company_name: 'Fullscript',
         job_title: 'Javascript Engineer II',
         resume_link:
             '20230914-Hakan-Sivritepe-Fullscript-JS-Engineer-II',
@@ -506,7 +507,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Coconut',
+        company_name: 'Coconut',
         job_title: 'Senior Developer',
         resume_link:
             '20230918-Hakan-Sivritepe-Coconut-Senior-Developer',
@@ -515,7 +516,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'RainBarrel',
+        company_name: 'RainBarrel',
         job_title: 'Senior Full-Stack Developer',
         resume_link:
             '20230921-Hakan-Sivritepe-RainBarrel-Senior-Full-Stack',
@@ -525,7 +526,7 @@ const jobs = [
             'https://docs.google.com/document/d/1cTyKv_HtpPw0-VTlZO_F2WVcarDKjKn72bnMiUIPccU/edit',
     },
     {
-        company_id: 'Fortinet',
+        company_name: 'Fortinet',
         job_title: 'Web Developer',
         resume_link:
             '20230929-Hakan-Sivritepe-Fortinet-Web-Developer',
@@ -533,7 +534,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'The Conference Board of Canada',
+        company_name: 'The Conference Board of Canada',
         job_title: 'Senior Web Developer (Remote)',
         resume_link:
             '20230929-Hakan-Sivritepe-Conference-Board-Canada-Senior-Web',
@@ -542,7 +543,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'SimplyPHP',
+        company_name: 'SimplyPHP',
         job_title: 'Web Application Developer',
         resume_link:
             '20230929-Hakan-Sivritepe-SimplyPHP-Web-Application-Developer',
@@ -551,7 +552,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Craver',
+        company_name: 'Craver',
         job_title: 'Intermediate Frontend Developer',
         resume_link:
             '20230929-Hakan-Sivritepe-Craver-Intermediate-Frontend-Developer',
@@ -560,7 +561,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Super.com',
+        company_name: 'Super.com',
         job_title:
             'Intermediate Software Engineer (Full Stack) (Remote)',
         resume_link:
@@ -570,7 +571,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'SimplyPHP',
+        company_name: 'SimplyPHP',
         job_title: 'PHP Developer',
         resume_link:
             '20230929-Hakan-Sivritepe-SimplyPHP-Web-Application-Developer',
@@ -579,14 +580,14 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'PolicyMe',
+        company_name: 'PolicyMe',
         job_title: 'Software Engineer - Fullstack',
         resume_link:
             'https://www.linkedin.com/jobs/view/3727222280/?refId=da8434e9-6006-430e-b50c-b45cdf7cb65d&',
         cover_link: '',
     },
     {
-        company_id: 'BrainStation',
+        company_name: 'BrainStation',
         job_title: 'Web Developer - Educator',
         resume_link: '20230929-Hakan-Sivritepe-',
         job_link:
@@ -595,7 +596,7 @@ const jobs = [
             '20231005-Hakan-Sivritepe-BrainStation-Educator-Cover',
     },
     {
-        company_id: 'Jungle Scout',
+        company_name: 'Jungle Scout',
         job_title: 'Software Engineer',
         resume_link: '20230929-Hakan-Sivritepe-',
         job_link:
@@ -603,7 +604,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'HustleWing',
+        company_name: 'HustleWing',
         job_title: 'Web Developer',
         resume_link: '20230929-Hakan-Sivritepe-',
         job_link:
@@ -611,7 +612,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'eCapital Corp.',
+        company_name: 'eCapital Corp.',
         job_title: 'Full-Stack Software Developer',
         resume_link:
             '20231008-Hakan-Sivritepe-eCapitalCorp-Full-Stack-Software-Developer',
@@ -620,7 +621,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Cedar',
+        company_name: 'Cedar',
         job_title: 'Software Engineer (Launch)',
         resume_link: '20230929-Hakan-Sivritepe-',
         job_link:
@@ -628,7 +629,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Binance.us',
+        company_name: 'Binance.us',
         job_title: 'Senior Web Developer (Remote)',
         resume_link:
             '20231012-Hakan-Sivritepe-Binance-Senior-Web-Engineer',
@@ -637,7 +638,7 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Klue',
+        company_name: 'Klue',
         job_title: 'Senior Frontend Engineer',
         resume_link:
             '20230908-Hakan-Sivritepe-Klue-Intermediate-Frontend-Engineer ',
@@ -646,13 +647,356 @@ const jobs = [
         cover_link: '',
     },
     {
-        company_id: 'Airble',
+        company_name: 'Airble',
         job_title: 'Software Developer',
         resume_link:
             '20231013-Hakan-Sivritepe-Airble-Softwware-Developer',
         job_link:
             'https://jobs.vantechjournal.com/software-developer-3439ae3c2a07',
         cover_link: '',
+    },
+];
+
+const actions = [
+    {
+        id: 1,
+        date: '2023/07/27',
+        company_name: 'CSC Generation',
+    },
+    {
+        id: 2,
+        date: '2023/07/25',
+        company_name: 'Amazon',
+    },
+    {
+        id: 3,
+        date: '2023/08/01',
+        company_name: 'Storm2',
+    },
+    {
+        id: 4,
+        date: '2023/08/04',
+        company_name: 'Push',
+    },
+    {
+        id: 5,
+        date: '2023/08/05',
+        company_name: 'Commit',
+    },
+    {
+        id: 6,
+        date: '2023/08/05',
+        company_name: 'Slack',
+    },
+    {
+        id: 7,
+        date: '2023/08/21',
+        company_name: 'MVP Talent Corp',
+    },
+    {
+        id: 8,
+        date: '2023/08/21',
+        company_name: 'Bounce',
+    },
+    {
+        id: 9,
+        date: '2023/08/21',
+        company_name: 'Synergy Loft Inc.',
+    },
+    {
+        id: 10,
+        date: '2023/08/21',
+        company_name: 'Sage Recruiting',
+    },
+    {
+        id: 11,
+        date: '2023/08/22',
+        company_name: 'Busbud',
+    },
+    {
+        id: 12,
+        date: '2023/08/22',
+        company_name: 'StackAdapt',
+    },
+    {
+        id: 13,
+        date: '2023/08/22',
+        company_name: 'Affinity.co',
+    },
+    {
+        id: 14,
+        date: '2023/08/22',
+        company_name: 'Applied Systems',
+    },
+    {
+        id: 15,
+        date: '2023/08/23',
+        company_name: 'Zapier',
+    },
+    {
+        id: 16,
+        date: '2023/08/23',
+        company_name: 'CapIntel',
+    },
+    {
+        id: 17,
+        date: '2023/08/23',
+        company_name: 'Pagefreezer',
+    },
+    {
+        id: 18,
+        date: '2023/08/23',
+        company_name: 'Storm4 - AgTech',
+    },
+    {
+        id: 19,
+        date: '2023/08/23',
+        company_name: 'NextPath Career Partners',
+    },
+    {
+        id: 20,
+        date: '2023/08/23',
+        company_name: 'Chime',
+    },
+    {
+        id: 21,
+        date: '2023/08/23',
+        company_name: 'Mosey',
+    },
+    {
+        id: 22,
+        date: '2023/08/23',
+        company_name: 'ETM Core',
+    },
+    {
+        id: 23,
+        date: '2023/08/23',
+        company_name: 'Stan',
+    },
+    {
+        id: 24,
+        date: '2023/08/23',
+        company_name: 'Shakepay',
+    },
+    {
+        id: 25,
+        date: '2023/08/23',
+        company_name: 'Basetwo AI',
+    },
+    {
+        id: 26,
+        date: '2023/08/23',
+        company_name: 'Clipboard Health',
+    },
+    {
+        id: 27,
+        date: '2023/08/24',
+        company_name: 'Lululemon',
+    },
+    {
+        id: 28,
+        date: '2023/08/24',
+        company_name: 'Sonos',
+    },
+    {
+        id: 29,
+        date: '2023/08/27',
+        company_name: '(Remote)',
+    },
+    {
+        id: 30,
+        date: '2023/08/28',
+        company_name: 'Konnect Way',
+    },
+    {
+        id: 31,
+        date: '2023/08/28',
+        company_name: 'd1g1t',
+    },
+    {
+        id: 32,
+        date: '2023/09/01',
+        company_name: 'Roofr',
+    },
+    {
+        id: 33,
+        date: '2023/09/01',
+        company_name: 'Gigster Network',
+    },
+    {
+        id: 34,
+        date: '2023/09/01',
+        company_name: 'Swim Recruiting',
+    },
+    {
+        id: 35,
+        date: '2023/09/01',
+        company_name: '13Adobe',
+    },
+    {
+        id: 36,
+        date: '2023/09/01',
+        company_name: 'Pani',
+    },
+    {
+        id: 37,
+        date: '2023/09/06',
+        company_name: 'PYMNTS',
+    },
+    {
+        id: 38,
+        date: '2023/09/08',
+        company_name: 'Milk Moovement',
+    },
+    {
+        id: 39,
+        date: '2023/09/11',
+        company_name: '20Klue',
+    },
+    {
+        id: 40,
+        date: '2023/09/11',
+        company_name: "Let's Roam",
+    },
+    {
+        id: 41,
+        date: '2023/09/11',
+        company_name: 'Pixieset',
+    },
+    {
+        id: 42,
+        date: '2023/09/11',
+        company_name: 'Pixieset',
+    },
+    {
+        id: 43,
+        date: '2023/09/11',
+        company_name: 'Shakepay',
+    },
+    {
+        id: 44,
+        date: '2023/09/12',
+        company_name: 'Pattern Learning AI',
+    },
+    {
+        id: 45,
+        date: '2023/09/12',
+        company_name: 'Asana',
+    },
+    {
+        id: 46,
+        date: '2023/09/12',
+        company_name: '20Clevertech',
+    },
+    {
+        id: 47,
+        date: '2023/09/14',
+        company_name: 'Randstad',
+    },
+    {
+        id: 48,
+        date: '2023/09/14',
+        company_name: '16Fullscript',
+    },
+    {
+        id: 49,
+        date: '2023/09/18',
+        company_name: '25Coconut',
+    },
+    {
+        id: 50,
+        date: '2023/09/21',
+        company_name: 'RainBarrel',
+    },
+    {
+        id: 51,
+        date: '2023/09/29',
+        company_name: 'Fortinet',
+    },
+    {
+        id: 52,
+        date: '2023/09/29',
+        company_name: 'The Conference Board of Canada',
+    },
+    {
+        id: 53,
+        date: '2023/09/29',
+        company_name: '02SimplyPHP',
+    },
+    {
+        id: 54,
+        date: '2023/09/29',
+        company_name: 'Craver',
+    },
+    {
+        id: 55,
+        date: '2023/09/29',
+        company_name: 'Super.com',
+    },
+    {
+        id: 56,
+        date: '2023/10/02',
+        company_name: '05SimplyPHP',
+    },
+    {
+        id: 57,
+        date: '2023/10/02',
+        company_name: 'PolicyMe',
+    },
+    {
+        id: 58,
+        date: '2023/10/05',
+        company_name: 'BrainStation',
+    },
+    {
+        id: 59,
+        date: '2023/10/06',
+        company_name: 'Jungle Scout',
+    },
+    {
+        id: 60,
+        date: '2023/10/07',
+        company_name: 'HustleWing',
+    },
+    {
+        id: 61,
+        date: '2023/10/07',
+        company_name: 'eCapital Corp.',
+    },
+    {
+        id: 62,
+        date: '2023/10/07',
+        company_name: '11Cedar',
+    },
+    {
+        id: 63,
+        date: '2023/10/12',
+        company_name: 'Binance.us',
+    },
+    {
+        id: 64,
+        date: '2023/10/13',
+        company_name: 'Klue',
+    },
+    {
+        id: 65,
+        date: '2023/10/13',
+        company_name: 'Airble',
+    },
+    {
+        id: 66,
+        date: '2023/10/23',
+        company_name: 'Canny',
+    },
+    {
+        id: 67,
+        date: '2023/10/23',
+        company_name: 'Fishtank',
+    },
+    {
+        id: 68,
+        date: '2023/10/23',
+        company_name: 'Roofr',
     },
 ];
 
@@ -673,54 +1017,119 @@ async function main() {
         },
     });
 
-    // Create companies
-    companies.map(async (company) => {
-        const companyItem = await prisma.companies.upsert({
-            where: {
-                id: ++simpleCounter,
-            },
-            update: {},
-            create: {
-                company_name: company,
-                company_website: '',
-            },
-        });
-    });
-    simpleCounter = 0;
-
     // Create action types
-    actionTypes.map(async (actionType) => {
-        const actionTypeItem = await prisma.action_types.upsert({
-            where: {
-                id: ++simpleCounter,
-            },
-            update: {},
-            create: {
-                action_type_title: actionType,
-                action_type_desc: '',
-            },
-        });
-    });
+    await Promise.all(
+        actionTypes.map(async (actionType) => {
+            await prisma.action_types.upsert({
+                where: {
+                    id: ++simpleCounter,
+                },
+                update: {},
+                create: {
+                    action_type_title: actionType,
+                    action_type_desc: '',
+                },
+            });
+        })
+    );
 
     simpleCounter = 0;
-    // Create jobs
-    jobs.map(async (job) => {
-        const jobItem = await prisma.jobs.upsert({
-            where: {
-                id: ++simpleCounter,
-            },
-            update: {},
-            create: {
-                job_title: job.job_title,
-                company_id: simpleCounter,
-                job_location: '',
-                job_link: job.job_link,
-                resume_link: job.resume_link,
-                cover_link: job.cover_link,
-                job_work_env: 'Remote',
-            },
-        });
-    });
+    // Create companies and jobs
+    await Promise.all(
+        companyNames.map(async (companyName) => {
+            const company = await prisma.companies.upsert({
+                where: {
+                    company_name: companyName,
+                },
+                update: {},
+                create: {
+                    company_name: companyName,
+                    company_website: '',
+                },
+            });
+
+            // Find the associated job data
+            const jobData = jobs.find(
+                (job) => job.company_name === companyName
+            );
+
+            if (jobData) {
+                await prisma.jobs.upsert({
+                    where: {
+                        id: ++simpleCounter,
+                    },
+                    update: {},
+                    create: {
+                        job_title: jobData.job_title,
+                        company: {
+                            connect: {
+                                id: company.id,
+                            },
+                        },
+                        job_location: '',
+                        job_link: jobData.job_link,
+                        resume_link: jobData.resume_link,
+                        cover_link: jobData.cover_link,
+                        job_work_env: 'Remote',
+                        user: {
+                            connect: {
+                                id: admin.id,
+                            },
+                        },
+                    },
+                });
+            }
+        })
+    );
+
+    simpleCounter = 0;
+    // Create actions and associate them with jobs
+    await Promise.all(
+        actions.map(async (actionData) => {
+            const company = await prisma.companies.findUnique({
+                where: {
+                    company_name: actionData.company_name,
+                },
+            });
+
+            if (company) {
+                const job = await prisma.jobs.findFirst({
+                    where: {
+                        company: {
+                            id: company.id,
+                        },
+                    },
+                });
+
+                if (job) {
+                    await prisma.actions.upsert({
+                        where: {
+                            id: ++simpleCounter,
+                        },
+                        update: {},
+                        create: {
+                            created_at: new Date(actionData.date),
+                            user: {
+                                connect: {
+                                    id: admin.id,
+                                },
+                            },
+                            job: {
+                                connect: {
+                                    id: job.id,
+                                },
+                            },
+                            action_type: {
+                                connect: {
+                                    id: 1,
+                                },
+                            },
+                        },
+                    });
+                }
+            }
+        })
+    );
 }
 
 main()

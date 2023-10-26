@@ -19,7 +19,7 @@ export default function JobTableList() {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
-            width: '5%',
+            width: '10%',
             ellipsis: true,
             responsive: ['sm'],
             render: (name, record) => (
@@ -33,21 +33,26 @@ export default function JobTableList() {
             sorter: (a, b) => a.id - b.id,
         },
         {
-            title: 'Company',
-            dataIndex: 'company_name',
+            title: 'Company Name',
+            dataIndex: 'company.company_name',
             key: 'company_name',
             ellipsis: true,
             responsive: ['sm'],
-            render: (name, record) => {
-                <Link
-                    href={`/tilt/companies/${record.company_id}`}
-                    className="text-blue-800 font-medium"
-                >
-                    {name}
-                </Link>;
-            },
+            render: (name, record) => (
+                console.log(),
+                (
+                    <Link
+                        href={`/tilt/companies/${record.company_id}`}
+                        className="text-blue-800 font-medium"
+                    >
+                        {record.company.company_name || 'N/A'}
+                    </Link>
+                )
+            ),
             sorter: (a, b) =>
-                a.company_name.localeCompare(b.company_name),
+                a.company.company_name.localeCompare(
+                    b.company.company_name
+                ),
         },
         {
             title: 'Job Title',
@@ -55,7 +60,31 @@ export default function JobTableList() {
             key: 'job_title',
             ellipsis: true,
             responsive: ['sm'],
+            render: (name, record) => (
+                <Link
+                    href={`/tilt/jobs/${record.id}`}
+                    className="text-blue-800 font-medium"
+                >
+                    {name}
+                </Link>
+            ),
             sorter: (a, b) => a.job_title.localeCompare(b.job_title),
+        },
+        {
+            title: 'Date Applied',
+            dataIndex: 'created_at',
+            key: 'created_at',
+            ellipsis: true,
+            responsive: ['sm'],
+            render: (date) => (
+                <span>
+                    {new Date(date).toLocaleString('en-US', {
+                        dateStyle: 'medium',
+                    })}
+                </span>
+            ),
+            sorter: (a, b) =>
+                a.created_at.localeCompare(b.created_at),
         },
     ];
 
@@ -63,6 +92,7 @@ export default function JobTableList() {
         axios
             .get('/api/jobs')
             .then((response) => {
+                console.log(response.data.jobs);
                 setJobs(response.data.jobs);
                 setFilteredJobs(response.data.jobs);
             })
@@ -169,7 +199,7 @@ export default function JobTableList() {
                       .toLowerCase()
                       .includes(value.toLowerCase())
                 : '',
-        onFilterDropdownVisibleChange: (visible) => {
+        onFilterDropdownOpenChange: (visible) => {
             if (visible) {
                 setTimeout(() => searchInput.select(), 100);
             }
@@ -194,6 +224,7 @@ export default function JobTableList() {
                 {filteredJobs.length} jobs
             </div>
             <Table
+                key={jobs.id}
                 columns={columnsWithSearch}
                 dataSource={filteredJobs}
                 scroll={{ x: true }}

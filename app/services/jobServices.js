@@ -5,7 +5,12 @@ const prisma = new PrismaClient();
 
 export async function getAllJobs() {
     try {
-        const jobs = await prisma.jobs.findMany();
+        const jobs = await prisma.jobs.findMany({
+            include: {
+                user: true,
+                company: true,
+            },
+        });
         return {
             status: 'success',
             statusCode: 200,
@@ -54,6 +59,10 @@ export async function getJobById(id) {
         const job = await prisma.jobs.findUnique({
             where: {
                 id: parseInt(id),
+            },
+            include: {
+                user: true,
+                company: true,
             },
         });
         return {

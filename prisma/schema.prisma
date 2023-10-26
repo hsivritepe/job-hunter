@@ -7,44 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model action_types {
-  id                Int       @id @default(autoincrement())
-  action_type_title String?   @db.VarChar(255)
-  action_type_desc  String?   @db.VarChar(255)
-  created_at        DateTime? @default(now())
-  updated_at        DateTime? @updatedAt
-}
-
-model actions {
-  id             Int       @id @default(autoincrement())
-  user_id        Int
-  job_id         Int
-  action_type_id Int
-  created_at     DateTime? @default(now())
-  updated_at     DateTime? @updatedAt
-}
-
-model companies {
-  id              Int     @id @default(autoincrement())
-  company_name    String? @unique(map: "company_name") @db.VarChar(255)
-  company_website String? @db.VarChar(255)
-  created_at      DateTime? @default(now())
-  updated_at      DateTime? @updatedAt
-}
-
-model jobs {
-  id           Int       @id @default(autoincrement())
-  job_title    String?   @db.VarChar(255)
-  company_id   Int?
-  job_location String?   @db.VarChar(255)
-  job_link     String?   @db.VarChar(255)
-  resume_link  String?   @db.VarChar(255)
-  cover_link   String?   @db.VarChar(255)
-  job_work_env String?   @db.VarChar(255)
-  created_at   DateTime? @default(now())
-  updated_at   DateTime? @updatedAt
-}
-
 model users {
   id         Int       @id @default(autoincrement())
   first_name String?   @db.VarChar(255)
@@ -53,4 +15,53 @@ model users {
   password   String    @db.VarChar(255)
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
+  actions    actions[]
+  jobs       jobs[]
+}
+
+model companies {
+  id              Int        @id @default(autoincrement())
+  company_name    String?    @unique(map: "company_name") @db.VarChar(255)
+  company_website String?    @db.VarChar(255)
+  created_at      DateTime?  @default(now())
+  updated_at      DateTime?  @updatedAt
+  jobs            jobs[]     @relation("CompanyJobs")
+}
+
+model jobs {
+  id           Int         @id @default(autoincrement())
+  job_title    String?     @db.VarChar(255)
+  company_id   Int?
+  job_location String?     @db.VarChar(255)
+  job_link     String?     @db.VarChar(255)
+  resume_link  String?     @db.VarChar(255)
+  cover_link   String?     @db.VarChar(255)
+  job_work_env String?     @db.VarChar(255)
+  created_at   DateTime?   @default(now())
+  updated_at   DateTime?   @updatedAt
+  user         users       @relation(fields: [user_id], references: [id])
+  user_id      Int
+  actions      actions[]
+  company      companies?  @relation("CompanyJobs", fields: [company_id], references: [id])
+}
+
+model action_types {
+  id                Int       @id @default(autoincrement())
+  action_type_title String?   @db.VarChar(255)
+  action_type_desc  String?   @db.VarChar(255)
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
+  actions           actions[]
+}
+
+model actions {
+  id             Int          @id @default(autoincrement())
+  user_id        Int
+  job_id         Int
+  action_type_id Int
+  created_at     DateTime?    @default(now())
+  updated_at     DateTime?    @updatedAt
+  user           users        @relation(fields: [user_id], references: [id])
+  job            jobs         @relation(fields: [job_id], references: [id])
+  action_type    action_types @relation(fields: [action_type_id], references: [id])
 }
