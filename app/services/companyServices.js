@@ -129,10 +129,40 @@ const deleteCompany = async (id) => {
     }
 };
 
+const getJobsByCompanyId = async (id) => {
+    try {
+        const jobs = await prisma.jobs.findMany({
+            where: {
+                company_id: parseInt(id),
+            },
+            include: {
+                user: true,
+                company: true,
+            },
+        });
+        return {
+            status: 'success',
+            statusCode: 200,
+            json: {
+                message: jobs,
+            },
+        };
+    } catch (e) {
+        return {
+            status: 'error',
+            statusCode: 500,
+            json: {
+                message: e.message,
+            },
+        };
+    }
+};
+
 module.exports = {
     getAllCompanies,
     createCompany,
     getCompanyById,
     updateCompany,
     deleteCompany,
+    getJobsByCompanyId,
 };

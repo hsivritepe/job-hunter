@@ -2536,9 +2536,8 @@ async function main() {
                             },
                         },
                     });
-                    //console.log('Upsert result:', result);
                 } catch (error) {
-                    //console.error('Error creating job:', error);
+                    console.error('Error creating job:', error);
                 }
             })
         );

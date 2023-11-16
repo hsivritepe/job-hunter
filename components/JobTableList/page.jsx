@@ -8,7 +8,7 @@ import axios from 'axios';
 import { SearchOutlined, CalendarOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
-export default function JobTableList() {
+export default function JobTableList(compId) {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const [jobs, setJobs] = useState([]);
@@ -39,15 +39,12 @@ export default function JobTableList() {
             ellipsis: true,
             responsive: ['sm'],
             render: (name, record) => (
-                console.log(),
-                (
-                    <Link
-                        href={`/tilt/companies/${record.company_id}`}
-                        className="text-blue-800 font-medium"
-                    >
-                        {record.company.company_name || 'N/A'}
-                    </Link>
-                )
+                <Link
+                    href={`/tilt/companies/${record.company_id}`}
+                    className="text-blue-800 font-medium"
+                >
+                    {record.company.company_name || 'N/A'}
+                </Link>
             ),
             sorter: (a, b) =>
                 a.company.company_name.localeCompare(
@@ -88,21 +85,32 @@ export default function JobTableList() {
         },
     ];
 
-    const getJobs = () => {
-        axios
-            .get('/api/jobs')
-            .then((response) => {
-                console.log(response.data.jobs);
-                setJobs(response.data.jobs);
-                setFilteredJobs(response.data.jobs);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    const getJobs = (theId) => {
+        if (theId === 'all') {
+            axios
+                .get('/api/jobs')
+                .then((response) => {
+                    setJobs(response.data.jobs);
+                    setFilteredJobs(response.data.jobs);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else {
+            axios
+                .get(`/api/companies/${theId}/jobs`)
+                .then((response) => {
+                    setJobs(response.data.job);
+                    setFilteredJobs(response.data.job);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     };
 
     useEffect(() => {
-        getJobs();
+        getJobs(14);
     }, []);
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -221,7 +229,7 @@ export default function JobTableList() {
         <>
             <div className="text-right pr-8 pb-4">
                 <span className="font-semibold">Total:</span>{' '}
-                {filteredJobs.length} jobs
+                {filteredJobs?.length} jobs
             </div>
             <Table
                 key={jobs.id}

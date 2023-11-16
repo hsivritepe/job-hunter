@@ -8,11 +8,11 @@ import axios from 'axios';
 import { SearchOutlined, CalendarOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
-export default function ActionTableList(jobId) {
+export default function CompanyTableList() {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
-    const [actions, setActions] = useState([]);
-    const [filteredActions, setFilteredActions] = useState([]);
+    const [companies, setCompanies] = useState([]);
+    const [filteredCompanies, setFilteredCompanies] = useState([]);
 
     const columns = [
         {
@@ -22,54 +22,59 @@ export default function ActionTableList(jobId) {
             width: '10%',
             ellipsis: true,
             responsive: ['sm'],
+            render: (name, record) => (
+                <Link
+                    href={`/tilt/companies/${record.id}`}
+                    className="text-blue-800 font-medium"
+                >
+                    {name}
+                </Link>
+            ),
             sorter: (a, b) => a.id - b.id,
         },
         {
-            title: 'Action Title',
-            dataIndex: 'action_type.action_type_title',
-            key: 'action_type_title',
+            title: 'Company Name',
+            dataIndex: 'companies.company_name',
+            key: 'company_name',
             ellipsis: true,
-            responsive: ['md'],
+            responsive: ['sm'],
             render: (name, record) => (
-                <span>
-                    {record.action_type.action_type_title || 'N/A'}
-                </span>
+                <Link
+                    href={`/tilt/companies/${record.id}`}
+                    className="text-blue-800 font-medium"
+                >
+                    {record.company_name || 'N/A'}
+                </Link>
             ),
             sorter: (a, b) =>
-                a.action_type.action_type_title.localeCompare(
-                    b.action_type.action_type_title
+                a.companies.company_name.localeCompare(
+                    b.companies.company_name
                 ),
         },
         {
             title: 'Date Applied',
-            dataIndex: 'action_type.created_at',
+            dataIndex: 'created_at',
             key: 'created_at',
             ellipsis: true,
             responsive: ['sm'],
-            render: (date, record) => (
+            render: (date) => (
                 <span>
-                    {new Date(record.created_at).toLocaleString(
-                        'en-US',
-                        {
-                            dateStyle: 'medium',
-                        }
-                    )}
+                    {new Date(date).toLocaleString('en-US', {
+                        dateStyle: 'medium',
+                    })}
                 </span>
             ),
             sorter: (a, b) =>
-                a.record.created_at.localeCompare(
-                    b.record.created_at
-                ),
+                a.created_at.localeCompare(b.created_at),
         },
     ];
 
-    const getActions = () => {
+    const getCompanies = () => {
         axios
-            .get(`/api/jobs/1/actions`)
+            .get('/api/companies')
             .then((response) => {
-                console.log(response.data.job);
-                setActions(response.data.job);
-                setFilteredActions(response.data.job);
+                setCompanies(response.data.companies);
+                setFilteredCompanies(response.data.companies);
             })
             .catch((error) => {
                 console.log(error);
@@ -77,8 +82,36 @@ export default function ActionTableList(jobId) {
     };
 
     useEffect(() => {
-        getActions();
+        getCompanies();
     }, []);
+
+    const handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        setSearchText(selectedKeys[0]);
+        setSearchedColumn(dataIndex);
+
+        const filteredCompanies = companies.filter((company) => {
+            const targetValue = company[dataIndex];
+            if (targetValue) {
+                return targetValue
+                    .toString()
+                    .toLowerCase()
+                    .includes(selectedKeys[0].toLowerCase());
+            }
+            return false;
+        });
+
+        setFilteredCompanies(filteredCompanies);
+    };
+
+    useEffect(() => {
+        setFilteredCompanies(companies);
+    }, [companies]);
+
+    const handleReset = (clearFilters) => {
+        clearFilters();
+        setSearchText('');
+    };
 
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({
@@ -168,12 +201,12 @@ export default function ActionTableList(jobId) {
         <>
             <div className="text-right pr-8 pb-4">
                 <span className="font-semibold">Total:</span>{' '}
-                {filteredActions.length} actions
+                {filteredCompanies.length} companies
             </div>
             <Table
-                key={actions.id}
+                key={companies.id}
                 columns={columnsWithSearch}
-                dataSource={filteredActions}
+                dataSource={filteredCompanies}
                 scroll={{ x: true }}
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky

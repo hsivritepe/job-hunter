@@ -18,7 +18,6 @@ export default function JobDetails({ params }) {
                 const data = await axios.get(
                     `/api/jobs/${params.id}`
                 );
-                console.log(data.data.job);
                 setJobData(data.data.job);
             } catch (error) {
                 console.error('Error fetching job details:', error);
