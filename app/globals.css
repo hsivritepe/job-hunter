@@ -33,3 +33,7 @@ button,
 .orange-button {
     @apply bg-orange-500 hover:bg-orange-700;
 }
+
+a.colored {
+    @apply text-blue-500 hover:text-blue-700;
+}

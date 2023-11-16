@@ -135,3 +135,31 @@ export async function deleteJob(id) {
         };
     }
 }
+
+export async function getActionsByJobId(id) {
+    try {
+        const actions = await prisma.actions.findMany({
+            where: {
+                job_id: parseInt(id),
+            },
+            include: {
+                action_type: true,
+            },
+        });
+        return {
+            status: 'success',
+            statusCode: 200,
+            json: {
+                message: actions,
+            },
+        };
+    } catch (e) {
+        return {
+            status: 'error',
+            statusCode: 500,
+            json: {
+                message: e.message,
+            },
+        };
+    }
+}
