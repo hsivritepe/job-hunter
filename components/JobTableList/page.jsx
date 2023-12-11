@@ -110,7 +110,7 @@ export default function JobTableList(compId) {
     };
 
     useEffect(() => {
-        getJobs(14);
+        getJobs('all');
     }, []);
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {

@@ -104,7 +104,6 @@ const updateCompany = async (body, id) => {
 };
 
 const deleteCompany = async (id) => {
-    console.log(id);
     try {
         const deleted = await prisma.companies.delete({
             where: {

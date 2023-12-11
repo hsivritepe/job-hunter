@@ -7,6 +7,9 @@ export default function Navbar() {
             <Link className="font-bold" href={'/'}>
                 Job Hunter
             </Link>
+            <Link href={'/tilt/jobs'}>Jobs</Link>
+            <Link href={'/tilt/actions'}>Actions</Link>
+            <Link href={'/tilt/contacts'}>Contacts</Link>
             <ProfileIcon />
         </nav>
     );

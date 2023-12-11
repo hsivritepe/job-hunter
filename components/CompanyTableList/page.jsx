@@ -204,7 +204,6 @@ export default function CompanyTableList() {
                 {filteredCompanies.length} companies
             </div>
             <Table
-                key={companies.id}
                 columns={columnsWithSearch}
                 dataSource={filteredCompanies}
                 scroll={{ x: true }}

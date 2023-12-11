@@ -67,7 +67,6 @@ export default function ActionTableList(jobId) {
         axios
             .get(`/api/jobs/1/actions`)
             .then((response) => {
-                console.log(response.data.job);
                 setActions(response.data.job);
                 setFilteredActions(response.data.job);
             })
