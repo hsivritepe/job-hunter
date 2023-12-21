@@ -165,9 +165,16 @@ export default function ActionTableList(jobId) {
 
     return (
         <>
-            <div className="text-right pr-8 pb-4">
-                <span className="font-semibold">Total:</span>{' '}
-                {filteredActions.length} actions
+            <div className="flex justify-between pr-8 pb-0">
+                <span className="text-left font-bold">
+                    Action History
+                </span>
+                <span className="text-right">
+                    Total:{' '}
+                    <span className="font-semibold">
+                        {filteredActions.length} action(s)
+                    </span>
+                </span>
             </div>
             <Table
                 key={actions.id}

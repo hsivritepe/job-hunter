@@ -97,7 +97,7 @@ export default function CompanyDetails({ params }) {
             <br />
             <br />
 
-            <JobTableList companyId="14" />
+            <JobTableList companyId={params.id} />
         </div>
     );
 }

@@ -85,9 +85,9 @@ export default function JobTableList(compId) {
         },
     ];
 
-    const getJobs = (theId) => {
+    const getJobs = async (theId) => {
         if (theId === 'all') {
-            axios
+            await axios
                 .get('/api/jobs')
                 .then((response) => {
                     setJobs(response.data.jobs);
@@ -97,7 +97,7 @@ export default function JobTableList(compId) {
                     console.log(error);
                 });
         } else {
-            axios
+            await axios
                 .get(`/api/companies/${theId}/jobs`)
                 .then((response) => {
                     setJobs(response.data.job);
@@ -110,7 +110,7 @@ export default function JobTableList(compId) {
     };
 
     useEffect(() => {
-        getJobs('all');
+        getJobs(compId.companyId);
     }, []);
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -227,9 +227,14 @@ export default function JobTableList(compId) {
 
     return (
         <>
-            <div className="text-right pr-8 pb-4">
-                <span className="font-semibold">Total:</span>{' '}
-                {filteredJobs?.length} jobs
+            <div className="flex justify-between pr-8 pb-0">
+                <span className="text-left font-bold">Job List</span>
+                <span className="text-right">
+                    Total:{' '}
+                    <span className="font-semibold">
+                        {filteredJobs?.length} job(s)
+                    </span>
+                </span>
             </div>
             <Table
                 key={jobs.id}
