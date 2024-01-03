@@ -8,8 +8,8 @@ export default function Navbar() {
                 Job Hunter
             </Link>
             <Link href={'/tilt/jobs'}>Jobs</Link>
+            <Link href={'/tilt/companies'}>Companies</Link>
             <Link href={'/tilt/actions'}>Actions</Link>
-            <Link href={'/tilt/contacts'}>Contacts</Link>
             <ProfileIcon />
         </nav>
     );

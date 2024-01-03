@@ -8,7 +8,7 @@ import axios from 'axios';
 import { SearchOutlined, CalendarOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
-export default function ActionTableList(jobId) {
+export default function JobActionsTableList(props) {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const [actions, setActions] = useState([]);
@@ -41,23 +41,6 @@ export default function ActionTableList(jobId) {
                 ),
         },
         {
-            title: 'Job Title',
-            dataIndex: 'job.job_title',
-            key: 'job_title',
-            ellipsis: true,
-            responsive: ['md'],
-            render: (name, record) => (
-                <Link
-                    href={`/tilt/jobs/${record.id}`}
-                    className="text-blue-800 font-medium"
-                >
-                    {record.job.job_title}
-                </Link>
-            ),
-            sorter: (a, b) =>
-                a.job.job_title.localeCompare(b.job.job_title),
-        },
-        {
             title: 'Date Applied',
             dataIndex: 'action_type.created_at',
             key: 'created_at',
@@ -82,11 +65,10 @@ export default function ActionTableList(jobId) {
 
     const getActions = () => {
         axios
-            .get(`/api/actions`)
+            .get(`/api/jobs/${props.jobId}/actions`)
             .then((response) => {
-                console.log(response.data.actions);
-                setActions(response.data.actions);
-                setFilteredActions(response.data.actions);
+                setActions(response.data.job);
+                setFilteredActions(response.data.job);
             })
             .catch((error) => {
                 console.log(error);

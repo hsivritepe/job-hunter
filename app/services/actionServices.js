@@ -8,7 +8,11 @@ export async function getAllActions() {
         const actions = await prisma.actions.findMany({
             include: {
                 user: true,
-                job: true,
+                job: {
+                    include: {
+                        company: true,
+                    },
+                },
                 action_type: true,
             },
         });

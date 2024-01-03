@@ -6,7 +6,7 @@ import MainTitle from '@/components/MainTitle/page';
 import { GetJobDetails } from '@/app/helpers/helpers';
 import { Descriptions, Breadcrumb } from 'antd';
 import Link from 'next/link';
-import ActionTableList from '@/components/ActionTableList/page';
+import JobActionsTableList from '@/components/JobActionsTableList/page';
 import MyBreadcrumb from '@/components/Breadcrumb';
 
 export default function JobDetails({ params }) {
@@ -135,7 +135,7 @@ export default function JobDetails({ params }) {
             )}
             <br />
             <br />
-            <ActionTableList jobId={params.id} />
+            <JobActionsTableList jobId={params.id} />
         </div>
     );
 }
