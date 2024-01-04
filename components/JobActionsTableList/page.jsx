@@ -29,7 +29,7 @@ export default function JobActionsTableList(props) {
             dataIndex: 'action_type.action_type_title',
             key: 'action_type_title',
             ellipsis: true,
-            responsive: ['md'],
+            responsive: ['xs'],
             render: (name, record) => (
                 <span>
                     {record.action_type.action_type_title || 'N/A'}
@@ -45,7 +45,7 @@ export default function JobActionsTableList(props) {
             dataIndex: 'action_type.created_at',
             key: 'created_at',
             ellipsis: true,
-            responsive: ['sm'],
+            responsive: ['xs'],
             render: (date, record) => (
                 <span>
                     {new Date(record.created_at).toLocaleString(
@@ -183,7 +183,7 @@ export default function JobActionsTableList(props) {
                 scroll={{ x: true }}
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky
-                className="p-6 bg-white"
+                className="py-2 sm:p-6 bg-white"
             />
         </>
     );

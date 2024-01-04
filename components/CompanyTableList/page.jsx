@@ -37,7 +37,7 @@ export default function CompanyTableList() {
             dataIndex: 'companies.company_name',
             key: 'company_name',
             ellipsis: true,
-            responsive: ['sm'],
+            responsive: ['xs'],
             render: (name, record) => (
                 <Link
                     href={`/tilt/companies/${record.id}`}
@@ -56,7 +56,7 @@ export default function CompanyTableList() {
             dataIndex: 'created_at',
             key: 'created_at',
             ellipsis: true,
-            responsive: ['sm'],
+            responsive: ['xs'],
             render: (date) => (
                 <span>
                     {new Date(date).toLocaleString('en-US', {
@@ -209,7 +209,7 @@ export default function CompanyTableList() {
                 scroll={{ x: true }}
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky
-                className="p-6 bg-white"
+                className="py-2 sm:p-6 bg-white"
             />
         </>
     );

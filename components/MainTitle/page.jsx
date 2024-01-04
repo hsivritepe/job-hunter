@@ -8,7 +8,7 @@ export default function MainTitle({ title, description, button }) {
                     <h1 className="text-blueGray-900 text-2xl font-semibold">
                         {title}
                     </h1>
-                    <p className="pt-5 text-cyan-900">
+                    <p className="pt-1 text-cyan-900">
                         {description}
                     </p>
                 </div>

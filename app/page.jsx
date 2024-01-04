@@ -6,7 +6,7 @@ export default function Home() {
             <div>Welcome to Job Hunter!</div>
             <Link
                 href={'/login'}
-                className="px-6 py-3 bg-blue-500 text-white rounded-lg w-1/6 mx-auto text-center"
+                className="px-6 py-3 bg-blue-500 text-white rounded-lg w-1/2 md:w-1/4 sm:w-1/6 mx-auto text-center"
             >
                 Login
             </Link>

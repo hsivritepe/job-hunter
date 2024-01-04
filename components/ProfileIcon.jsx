@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { signIn, useSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
@@ -9,19 +9,21 @@ import Link from 'next/link';
 export default function ProfileIcon() {
     const { data: session, status } = useSession();
 
-    const router = useRouter();
+    // const router = useRouter();
 
-    useEffect(() => {
-        if (status === 'authenticated') {
-            router.push('/tilt');
-        } else {
-            router.push('/login');
-        }
-    }, [status]);
+    // useEffect(() => {
+    //     if (status === 'authenticated') {
+    //         router.push('/tilt');
+    //     } else {
+    //         router.push('/login');
+    //     }
+    // }, [status]);
 
     if (status === 'authenticated') {
         return (
-            <div className="flex gap-5">
+            <div className="w-100">
+                <hr />
+                <br />
                 <Image
                     src={session.user.image}
                     width={32}

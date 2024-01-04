@@ -13,10 +13,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body
+                className={`${inter.className} px-[2rem] sm:px-[5rem]`}
+            >
                 <NextAuthProvider>
                     <Navbar />
-                    <div className="pt-16">{children}</div>
+                    <div className="pt-4">{children}</div>
                 </NextAuthProvider>
             </body>
         </html>

@@ -29,7 +29,7 @@ export default function ActionTableList(jobId) {
             dataIndex: 'action_type.action_type_title',
             key: 'action_type_title',
             ellipsis: true,
-            responsive: ['md'],
+            responsive: ['xs'],
             render: (name, record) => (
                 <span>
                     {record.action_type.action_type_title || 'N/A'}
@@ -45,7 +45,7 @@ export default function ActionTableList(jobId) {
             dataIndex: 'job.job_title',
             key: 'job_title',
             ellipsis: true,
-            responsive: ['md'],
+            responsive: ['sm'],
             render: (name, record) => (
                 <Link
                     href={`/tilt/jobs/${record.id}`}
@@ -62,7 +62,7 @@ export default function ActionTableList(jobId) {
             dataIndex: 'action_type.created_at',
             key: 'created_at',
             ellipsis: true,
-            responsive: ['sm'],
+            responsive: ['xs'],
             render: (date, record) => (
                 <span>
                     {new Date(record.created_at).toLocaleString(
@@ -183,10 +183,7 @@ export default function ActionTableList(jobId) {
 
     return (
         <>
-            <div className="flex justify-between pr-8 pb-0">
-                <span className="text-left font-bold">
-                    Action History
-                </span>
+            <div className="flex justify-end pr-8 pb-0">
                 <span className="text-right">
                     Total:{' '}
                     <span className="font-semibold">
@@ -201,7 +198,7 @@ export default function ActionTableList(jobId) {
                 scroll={{ x: true }}
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky
-                className="p-6 bg-white"
+                className="py-2 sm:p-6 bg-white"
             />
         </>
     );

@@ -56,7 +56,7 @@ export default function JobTableList(compId) {
             dataIndex: 'job_title',
             key: 'job_title',
             ellipsis: true,
-            responsive: ['sm'],
+            responsive: ['xs'],
             render: (name, record) => (
                 <Link
                     href={`/tilt/jobs/${record.id}`}
@@ -227,8 +227,7 @@ export default function JobTableList(compId) {
 
     return (
         <>
-            <div className="flex justify-between pr-8 pb-0">
-                <span className="text-left font-bold">Job List</span>
+            <div className="flex justify-end pr-8 pb-0">
                 <span className="text-right">
                     Total:{' '}
                     <span className="font-semibold">
@@ -243,7 +242,7 @@ export default function JobTableList(compId) {
                 scroll={{ x: true }}
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky
-                className="p-6 bg-white"
+                className="py-2 sm:p-6 bg-white"
             />
         </>
     );
