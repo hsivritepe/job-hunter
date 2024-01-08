@@ -29,7 +29,7 @@ export default function ActionTableList(jobId) {
             dataIndex: 'action_type.action_type_title',
             key: 'action_type_title',
             ellipsis: true,
-            responsive: ['xs'],
+            responsive: ['xs', 'sm'],
             render: (name, record) => (
                 <span>
                     {record.action_type.action_type_title || 'N/A'}
@@ -62,7 +62,7 @@ export default function ActionTableList(jobId) {
             dataIndex: 'action_type.created_at',
             key: 'created_at',
             ellipsis: true,
-            responsive: ['xs'],
+            responsive: ['xs', 'sm'],
             render: (date, record) => (
                 <span>
                     {new Date(record.created_at).toLocaleString(

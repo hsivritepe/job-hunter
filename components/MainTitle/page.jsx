@@ -1,6 +1,15 @@
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import Link from 'next/link';
 
-export default function MainTitle({ title, description, button }) {
+export default function MainTitle({
+    title,
+    description,
+    button,
+    buttonLink,
+    buttonText,
+    buttonColor,
+}) {
     return (
         <>
             <div className="py-6 flex justify-between">
@@ -13,12 +22,14 @@ export default function MainTitle({ title, description, button }) {
                     </p>
                 </div>
                 {button && (
-                    <Link
-                        href={buttonLink}
-                        className="btn bg-green-500 hover:bg-green-600 px-6 normal-case text-neutral-100"
+                    <Button
+                        type="primary"
+                        icon={<PlusCircleOutlined />}
+                        onClick={() => getJobs(compId.companyId)}
+                        className={`bg-${buttonColor}-200 text-black hover:bg-${buttonColor}-500 hover:text-white`}
                     >
-                        {icon} {buttonText}
-                    </Link>
+                        {buttonText}
+                    </Button>
                 )}
             </div>
         </>

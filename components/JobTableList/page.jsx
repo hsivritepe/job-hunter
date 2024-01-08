@@ -5,7 +5,11 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 
-import { SearchOutlined, CalendarOutlined } from '@ant-design/icons';
+import {
+    SearchOutlined,
+    CalendarOutlined,
+    PlusCircleOutlined,
+} from '@ant-design/icons';
 const { Search } = Input;
 
 export default function JobTableList(compId) {
