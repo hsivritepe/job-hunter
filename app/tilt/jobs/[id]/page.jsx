@@ -89,10 +89,10 @@ function JobDetails({ params }) {
                             {jobData.companies.companyName || 'N/A'}
                         </Descriptions.Item>
                         <Descriptions.Item label="Job Link">
-                            {jobData.job_link ? (
+                            {jobData.jobLink ? (
                                 <Link
                                     class="colored"
-                                    href={jobData.job_link}
+                                    href={jobData.jobLink}
                                     target="_blank"
                                 >
                                     Job link
@@ -102,10 +102,10 @@ function JobDetails({ params }) {
                             )}
                         </Descriptions.Item>
                         <Descriptions.Item label="Resume Link">
-                            {jobData.resume_link ? (
+                            {jobData.resumeLink ? (
                                 <Link
                                     class="colored"
-                                    href={jobData.resume_link}
+                                    href={jobData.resumeLink}
                                     target="_blank"
                                 >
                                     Resume link
@@ -115,10 +115,10 @@ function JobDetails({ params }) {
                             )}
                         </Descriptions.Item>
                         <Descriptions.Item label="Cover Link">
-                            {jobData.cover_link ? (
+                            {jobData.coverLink ? (
                                 <Link
                                     class="colored"
-                                    href={jobData.cover_link}
+                                    href={jobData.coverLink}
                                     target="_blank"
                                 >
                                     Cover link
@@ -128,7 +128,7 @@ function JobDetails({ params }) {
                             )}
                         </Descriptions.Item>
                         <Descriptions.Item label="Work Environment">
-                            {jobData.job_work_env || 'N/A'}
+                            {jobData.jobWorkEnv || 'N/A'}
                         </Descriptions.Item>
                     </Descriptions>
                 </>
