@@ -1,8 +1,10 @@
 'use client';
-import MainTitle from '@/components/MainTitle/page';
-import ActionTableList from '@/components/ActionTableList/page';
 
-export default function Actions() {
+import ActionTableList from '@/components/ActionTableList';
+import MainTitle from '@/components/MainTitle';
+import withAuth from '@/app/helpers/withAuth';
+
+function Actions() {
     return (
         <div>
             <MainTitle
@@ -17,3 +19,5 @@ export default function Actions() {
         </div>
     );
 }
+
+export default withAuth(Actions);

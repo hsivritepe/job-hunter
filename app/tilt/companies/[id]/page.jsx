@@ -2,14 +2,14 @@
 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import MainTitle from '@/components/MainTitle/page';
 import { GetCompanyDetails } from '@/app/helpers/helpers';
 import { Descriptions, Breadcrumb } from 'antd';
 import Link from 'next/link';
-import JobTableList from '@/components/JobTableList/page';
+import JobTableList from '@/components/JobTableList';
 import MyBreadcrumb from '@/components/Breadcrumb';
+import withAuth from '@/app/helpers/withAuth';
 
-export default function CompanyDetails({ params }) {
+function CompanyDetails({ params }) {
     const [companyData, setCompanyData] = useState(null);
 
     useEffect(() => {
@@ -31,7 +31,7 @@ export default function CompanyDetails({ params }) {
 
     return (
         <div>
-            {companyData?.company_name && (
+            {companyData?.companyName && (
                 <>
                     {/* <Breadcrumb className="pt-4 pb-8">
                         <Breadcrumb.Item>
@@ -46,7 +46,7 @@ export default function CompanyDetails({ params }) {
                             </Link>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                            {companyData.company_name}
+                            {companyData.companyName}
                         </Breadcrumb.Item>
                     </Breadcrumb> */}
                     <MyBreadcrumb
@@ -61,7 +61,7 @@ export default function CompanyDetails({ params }) {
                                 onClick: () => history.back(),
                             },
                             {
-                                name: companyData.company_name,
+                                name: companyData.companyName,
                             },
                         ]}
                     />
@@ -86,7 +86,7 @@ export default function CompanyDetails({ params }) {
                         }}
                     >
                         <Descriptions.Item label="Company Name">
-                            {companyData.company_name || 'N/A'}
+                            {companyData.companyName || 'N/A'}
                         </Descriptions.Item>
                         <Descriptions.Item label="Company Website">
                             {companyData.company_website || 'N/A'}
@@ -101,3 +101,5 @@ export default function CompanyDetails({ params }) {
         </div>
     );
 }
+
+export default withAuth(CompanyDetails);

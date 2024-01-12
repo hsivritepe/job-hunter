@@ -8,12 +8,13 @@ import axios from 'axios';
 import { SearchOutlined, CalendarOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
-export default function CompanyTableList() {
+export default function ActionTableList(jobId) {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
-    const [companies, setCompanies] = useState([]);
-    const [filteredCompanies, setFilteredCompanies] = useState([]);
+    const [actions, setActions] = useState([]);
+    const [filteredActions, setFilteredActions] = useState([]);
 
+    let counter = 0;
     const columns = [
         {
             title: 'ID',
@@ -24,57 +25,75 @@ export default function CompanyTableList() {
             responsive: ['sm'],
             render: (name, record) => (
                 <Link
-                    href={`/tilt/companies/${record.id}`}
+                    href={`/tilt/actions/${record.id}`}
                     className="text-blue-800 font-medium"
                 >
-                    {name}
+                    {++counter}
                 </Link>
             ),
             sorter: (a, b) => a.id - b.id,
         },
         {
-            title: 'Company Name',
-            dataIndex: 'companies.company_name',
-            key: 'company_name',
+            title: 'Action Title',
+            dataIndex: 'actionTypes.actionTypeTitle',
+            key: 'actionTypeTitle',
             ellipsis: true,
-            responsive: ['xs'],
+            responsive: ['xs', 'sm'],
             render: (name, record) => (
-                <Link
-                    href={`/tilt/companies/${record.id}`}
-                    className="text-blue-800 font-medium"
-                >
-                    {record.company_name || 'N/A'}
-                </Link>
-            ),
-            sorter: (a, b) =>
-                a.companies.company_name.localeCompare(
-                    b.companies.company_name
-                ),
-        },
-        {
-            title: 'Date Applied',
-            dataIndex: 'created_at',
-            key: 'created_at',
-            ellipsis: true,
-            responsive: ['xs'],
-            render: (date) => (
                 <span>
-                    {new Date(date).toLocaleString('en-US', {
-                        dateStyle: 'medium',
-                    })}
+                    {record.actionTypes.actionTypeTitle || 'N/A'}
                 </span>
             ),
             sorter: (a, b) =>
-                a.created_at.localeCompare(b.created_at),
+                a.actionTypes.actionTypeTitle.localeCompare(
+                    b.actionTypes.actionTypeTitle
+                ),
+        },
+        {
+            title: 'Job Title',
+            dataIndex: 'job.jobTitle',
+            key: 'jobTitle',
+            ellipsis: true,
+            responsive: ['xs', 'sm'],
+            render: (name, record) => (
+                <Link
+                    href={`/tilt/jobs/${record.id}`}
+                    className="text-blue-800 font-medium"
+                >
+                    {record.job.jobTitle}
+                </Link>
+            ),
+            sorter: (a, b) =>
+                a.job.jobTitle.localeCompare(b.job.jobTitle),
+        },
+        {
+            title: 'Date Applied',
+            dataIndex: 'actionTypes.createdAt',
+            key: 'createdAt',
+            ellipsis: true,
+            responsive: ['sm'],
+            render: (date, record) => (
+                <span>
+                    {new Date(record.createdAt).toLocaleString(
+                        'en-US',
+                        {
+                            dateStyle: 'medium',
+                        }
+                    )}
+                </span>
+            ),
+            sorter: (a, b) =>
+                a.record.createdAt.localeCompare(b.record.createdAt),
         },
     ];
 
-    const getCompanies = () => {
+    const getActions = () => {
         axios
-            .get('/api/companies')
+            .get(`/api/actions`)
             .then((response) => {
-                setCompanies(response.data.companies);
-                setFilteredCompanies(response.data.companies);
+                console.log(response.data.actions);
+                setActions(response.data.actions);
+                setFilteredActions(response.data.actions);
             })
             .catch((error) => {
                 console.log(error);
@@ -82,36 +101,8 @@ export default function CompanyTableList() {
     };
 
     useEffect(() => {
-        getCompanies();
+        getActions();
     }, []);
-
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
-
-        const filteredCompanies = companies.filter((company) => {
-            const targetValue = company[dataIndex];
-            if (targetValue) {
-                return targetValue
-                    .toString()
-                    .toLowerCase()
-                    .includes(selectedKeys[0].toLowerCase());
-            }
-            return false;
-        });
-
-        setFilteredCompanies(filteredCompanies);
-    };
-
-    useEffect(() => {
-        setFilteredCompanies(companies);
-    }, [companies]);
-
-    const handleReset = (clearFilters) => {
-        clearFilters();
-        setSearchText('');
-    };
 
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({
@@ -199,13 +190,18 @@ export default function CompanyTableList() {
 
     return (
         <>
-            <div className="text-right pr-8 pb-4">
-                <span className="font-semibold">Total:</span>{' '}
-                {filteredCompanies.length} companies
+            <div className="flex justify-end pr-8 pb-0">
+                <span className="text-right">
+                    Total:{' '}
+                    <span className="font-semibold">
+                        {filteredActions.length} action(s)
+                    </span>
+                </span>
             </div>
             <Table
+                key={actions.id}
                 columns={columnsWithSearch}
-                dataSource={filteredCompanies}
+                dataSource={filteredActions}
                 scroll={{ x: true }}
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky

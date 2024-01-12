@@ -5,15 +5,15 @@ const prisma = new PrismaClient();
 
 export async function getAllActions() {
     try {
-        const actions = await prisma.actions.findMany({
+        const actions = await prisma.Action.findMany({
             include: {
                 user: true,
                 job: {
                     include: {
-                        company: true,
+                        companies: true,
                     },
                 },
-                action_type: true,
+                actionTypes: true,
             },
         });
         return {
@@ -28,7 +28,7 @@ export async function getAllActions() {
             status: 'error',
             statusCode: 500,
             json: {
-                message: e.message,
+                message: 'get all actions: ' + e.message,
             },
         };
     }
@@ -38,7 +38,7 @@ export async function createAction(request) {
     try {
         const json = await request.json();
         const validated = await actionSchema.validateAsync(json);
-        const created = await prisma.actions.create({
+        const created = await prisma.Action.create({
             data: validated,
         });
         return {
@@ -61,14 +61,14 @@ export async function createAction(request) {
 
 export async function getAction(id) {
     try {
-        const action = await prisma.actions.findUnique({
+        const action = await prisma.Action.findUnique({
             where: {
-                id: parseInt(id),
+                id: id,
             },
             include: {
-                user: true,
-                job: true,
-                action_type: true,
+                User: true,
+                Job: true,
+                ActionType: true,
             },
         });
         return {
@@ -83,7 +83,7 @@ export async function getAction(id) {
             status: 'error',
             statusCode: 501,
             json: {
-                message: e.message,
+                message: 'get action: ' + e.message,
             },
         };
     }
@@ -93,9 +93,9 @@ export async function updateAction(body, id) {
     try {
         const json = await body.json();
         const validated = await actionSchema.validateAsync(json);
-        const updated = await prisma.actions.update({
+        const updated = await prisma.Action.update({
             where: {
-                id: parseInt(id),
+                id: id,
             },
             data: validated,
         });
@@ -119,9 +119,9 @@ export async function updateAction(body, id) {
 
 export async function deleteAction(id) {
     try {
-        const deleted = await prisma.actions.delete({
+        const deleted = await prisma.Action.delete({
             where: {
-                id: parseInt(id),
+                id: id,
             },
         });
         return {

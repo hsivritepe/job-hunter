@@ -1,14 +1,18 @@
 'use client';
+
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import withAuth from '../helpers/withAuth';
 
-export default function Tilt() {
-    const { data: session, status } = useSession();
-
+function TiltPage() {
+    const { data: session } = useSession();
+    if (!session) {
+        return <p>Please sign in to view your profile.</p>;
+    }
     return (
         <div>
             <h1>Dashboard</h1>
-            <p>Welcome {session?.user.name}</p>
+            {/* <p>Welcome {session?.user.name}</p> */}
             <Link href="/tilt/jobs" className="button mt-4">
                 Add a Job
             </Link>
@@ -29,3 +33,5 @@ export default function Tilt() {
         </div>
     );
 }
+
+export default withAuth(TiltPage);

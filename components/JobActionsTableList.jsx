@@ -8,12 +8,13 @@ import axios from 'axios';
 import { SearchOutlined, CalendarOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
-export default function ActionTableList(jobId) {
+export default function JobActionsTableList(props) {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const [actions, setActions] = useState([]);
     const [filteredActions, setFilteredActions] = useState([]);
 
+    let counter = 0;
     const columns = [
         {
             title: 'ID',
@@ -22,50 +23,41 @@ export default function ActionTableList(jobId) {
             width: '10%',
             ellipsis: true,
             responsive: ['sm'],
-            sorter: (a, b) => a.id - b.id,
-        },
-        {
-            title: 'Action Title',
-            dataIndex: 'action_type.action_type_title',
-            key: 'action_type_title',
-            ellipsis: true,
-            responsive: ['xs', 'sm'],
-            render: (name, record) => (
-                <span>
-                    {record.action_type.action_type_title || 'N/A'}
-                </span>
-            ),
-            sorter: (a, b) =>
-                a.action_type.action_type_title.localeCompare(
-                    b.action_type.action_type_title
-                ),
-        },
-        {
-            title: 'Job Title',
-            dataIndex: 'job.job_title',
-            key: 'job_title',
-            ellipsis: true,
-            responsive: ['sm'],
             render: (name, record) => (
                 <Link
                     href={`/tilt/jobs/${record.id}`}
                     className="text-blue-800 font-medium"
                 >
-                    {record.job.job_title}
+                    {++counter}
                 </Link>
             ),
+            sorter: (a, b) => a.id - b.id,
+        },
+        {
+            title: 'Action Title',
+            dataIndex: 'actionTypes.actionTypeTitle',
+            key: 'actionTypeTitle',
+            ellipsis: true,
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl'],
+            render: (name, record) => (
+                <span>
+                    {record.actionTypes.actionTypeTitle || 'N/A'}
+                </span>
+            ),
             sorter: (a, b) =>
-                a.job.job_title.localeCompare(b.job.job_title),
+                a.actionTypes.actionTypeTitle.localeCompare(
+                    b.actionTypes.actionTypeTitle
+                ),
         },
         {
             title: 'Date Applied',
-            dataIndex: 'action_type.created_at',
-            key: 'created_at',
+            dataIndex: 'actionTypes.createdAt',
+            key: 'createdAt',
             ellipsis: true,
-            responsive: ['xs', 'sm'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl'],
             render: (date, record) => (
                 <span>
-                    {new Date(record.created_at).toLocaleString(
+                    {new Date(record.createdAt).toLocaleString(
                         'en-US',
                         {
                             dateStyle: 'medium',
@@ -74,19 +66,16 @@ export default function ActionTableList(jobId) {
                 </span>
             ),
             sorter: (a, b) =>
-                a.record.created_at.localeCompare(
-                    b.record.created_at
-                ),
+                a.record.createdAt.localeCompare(b.record.createdAt),
         },
     ];
 
     const getActions = () => {
         axios
-            .get(`/api/actions`)
+            .get(`/api/jobs/${props.jobId}/actions`)
             .then((response) => {
-                console.log(response.data.actions);
-                setActions(response.data.actions);
-                setFilteredActions(response.data.actions);
+                setActions(response.data.job);
+                setFilteredActions(response.data.job);
             })
             .catch((error) => {
                 console.log(error);
@@ -183,7 +172,10 @@ export default function ActionTableList(jobId) {
 
     return (
         <>
-            <div className="flex justify-end pr-8 pb-0">
+            <div className="flex justify-between pr-8 pb-0">
+                <span className="text-left font-bold">
+                    Action History
+                </span>
                 <span className="text-right">
                     Total:{' '}
                     <span className="font-semibold">

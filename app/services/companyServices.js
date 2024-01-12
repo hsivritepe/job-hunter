@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const getAllCompanies = async () => {
     try {
-        const allCompanies = await prisma.companies.findMany();
+        const allCompanies = await prisma.Company.findMany();
         return {
             status: 'success',
             statusCode: 200,
@@ -28,7 +28,7 @@ const createCompany = async (body) => {
     try {
         const json = await body.json();
         const validated = await companySchema.validateAsync(json);
-        const created = await prisma.companies.create({
+        const created = await prisma.Company.create({
             data: validated,
         });
         return {
@@ -52,9 +52,9 @@ const createCompany = async (body) => {
 // [id] services
 const getCompanyById = async (id) => {
     try {
-        const company = await prisma.companies.findUnique({
+        const company = await prisma.Company.findUnique({
             where: {
-                id: parseInt(id),
+                id: id,
             },
         });
         return {
@@ -79,9 +79,9 @@ const updateCompany = async (body, id) => {
     try {
         const json = await body.json();
         const validated = await companySchema.validateAsync(json);
-        const updated = await prisma.companies.update({
+        const updated = await prisma.Company.update({
             where: {
-                id: parseInt(id),
+                id: id,
             },
             data: validated,
         });
@@ -105,9 +105,9 @@ const updateCompany = async (body, id) => {
 
 const deleteCompany = async (id) => {
     try {
-        const deleted = await prisma.companies.delete({
+        const deleted = await prisma.Company.delete({
             where: {
-                id: parseInt(id),
+                id: id,
             },
         });
         return {
@@ -130,13 +130,13 @@ const deleteCompany = async (id) => {
 
 const getJobsByCompanyId = async (id) => {
     try {
-        const jobs = await prisma.jobs.findMany({
+        const jobs = await prisma.Job.findMany({
             where: {
-                company_id: parseInt(id),
+                companyId: id,
             },
             include: {
                 user: true,
-                company: true,
+                companies: true,
             },
         });
         return {

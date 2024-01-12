@@ -18,6 +18,7 @@ export default function JobTableList(compId) {
     const [jobs, setJobs] = useState([]);
     const [filteredJobs, setFilteredJobs] = useState([]);
 
+    let counter = 0;
     const columns = [
         {
             title: 'ID',
@@ -31,36 +32,36 @@ export default function JobTableList(compId) {
                     href={`/tilt/jobs/${record.id}`}
                     className="text-blue-800 font-medium"
                 >
-                    {name}
+                    {++counter}
                 </Link>
             ),
             sorter: (a, b) => a.id - b.id,
         },
         {
             title: 'Company Name',
-            dataIndex: 'company.company_name',
-            key: 'company_name',
+            dataIndex: 'companies.companyName',
+            key: 'companyName',
             ellipsis: true,
-            responsive: ['sm'],
+            responsive: ['md'],
             render: (name, record) => (
                 <Link
-                    href={`/tilt/companies/${record.company_id}`}
+                    href={`/tilt/companies/${record.companyId}`}
                     className="text-blue-800 font-medium"
                 >
-                    {record.company.company_name || 'N/A'}
+                    {record.companies.companyName || 'N/A'}
                 </Link>
             ),
             sorter: (a, b) =>
-                a.company.company_name.localeCompare(
-                    b.company.company_name
+                a.companies.companyName.localeCompare(
+                    b.companies.companyName
                 ),
         },
         {
             title: 'Job Title',
-            dataIndex: 'job_title',
-            key: 'job_title',
+            dataIndex: 'jobTitle',
+            key: 'jobTitle',
             ellipsis: true,
-            responsive: ['xs'],
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl'],
             render: (name, record) => (
                 <Link
                     href={`/tilt/jobs/${record.id}`}
@@ -69,12 +70,12 @@ export default function JobTableList(compId) {
                     {name}
                 </Link>
             ),
-            sorter: (a, b) => a.job_title.localeCompare(b.job_title),
+            sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
         },
         {
             title: 'Date Applied',
-            dataIndex: 'created_at',
-            key: 'created_at',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
             ellipsis: true,
             responsive: ['sm'],
             render: (date) => (
@@ -84,8 +85,7 @@ export default function JobTableList(compId) {
                     })}
                 </span>
             ),
-            sorter: (a, b) =>
-                a.created_at.localeCompare(b.created_at),
+            sorter: (a, b) => a.createdAt.localeCompare(b.createdAt),
         },
     ];
 

@@ -2,14 +2,14 @@
 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import MainTitle from '@/components/MainTitle/page';
 import { GetJobDetails } from '@/app/helpers/helpers';
 import { Descriptions, Breadcrumb } from 'antd';
 import Link from 'next/link';
-import JobActionsTableList from '@/components/JobActionsTableList/page';
+import JobActionsTableList from '@/components/JobActionsTableList';
 import MyBreadcrumb from '@/components/Breadcrumb';
+import withAuth from '@/app/helpers/withAuth';
 
-export default function JobDetails({ params }) {
+function JobDetails({ params }) {
     const [jobData, setJobData] = useState(null);
 
     useEffect(() => {
@@ -28,7 +28,7 @@ export default function JobDetails({ params }) {
 
     return (
         <div>
-            {jobData?.job_title && (
+            {jobData?.jobTitle && (
                 <>
                     {/* <Breadcrumb className="pt-4 pb-8">
                         <Breadcrumb.Item>
@@ -43,7 +43,7 @@ export default function JobDetails({ params }) {
                             </Link>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
-                            {jobData.job_title}
+                            {jobData.jobTitle}
                         </Breadcrumb.Item>
                     </Breadcrumb> */}
                     <MyBreadcrumb
@@ -58,7 +58,7 @@ export default function JobDetails({ params }) {
                                 onClick: () => history.back(),
                             },
                             {
-                                name: jobData.job_title,
+                                name: jobData.jobTitle,
                             },
                         ]}
                     />
@@ -83,10 +83,10 @@ export default function JobDetails({ params }) {
                         }}
                     >
                         <Descriptions.Item label="Job Title">
-                            {jobData.job_title || 'N/A'}
+                            {jobData.jobTitle || 'N/A'}
                         </Descriptions.Item>
                         <Descriptions.Item label="Company Name">
-                            {jobData.company.company_name || 'N/A'}
+                            {jobData.companies.companyName || 'N/A'}
                         </Descriptions.Item>
                         <Descriptions.Item label="Job Link">
                             {jobData.job_link ? (
@@ -139,3 +139,5 @@ export default function JobDetails({ params }) {
         </div>
     );
 }
+
+export default withAuth(JobDetails);

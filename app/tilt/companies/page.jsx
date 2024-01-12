@@ -1,8 +1,10 @@
 'use client';
-import MainTitle from '@/components/MainTitle/page';
-import CompanyTableList from '@/components/CompanyTableList/page';
 
-export default function Jobs() {
+import CompanyTableList from '@/components/CompanyTableList';
+import MainTitle from '@/components/MainTitle';
+import withAuth from '@/app/helpers/withAuth';
+
+function Companies() {
     return (
         <div>
             <MainTitle
@@ -17,3 +19,5 @@ export default function Jobs() {
         </div>
     );
 }
+
+export default withAuth(Companies);

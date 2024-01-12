@@ -2,31 +2,31 @@ const Joi = require('joi');
 
 // Company validation schema
 const companySchema = Joi.object({
-    company_name: Joi.string().required(),
-    company_website: Joi.string(),
-    created_at: Joi.date().iso(),
-    updated_at: Joi.date().iso(),
+    companyName: Joi.string().required(),
+    companyWebsite: Joi.string(),
+    createdAt: Joi.date().iso(),
+    updatedAt: Joi.date().iso(),
 });
 
 // Jobs validation schema
 const jobSchema = Joi.object({
-    job_title: Joi.string().required(),
-    company_id: Joi.number().required(),
-    job_location: Joi.string().required(),
-    job_link: Joi.string(),
-    resume_link: Joi.string(),
-    job_work_env: Joi.string(),
-    created_at: Joi.date().iso(),
-    updated_at: Joi.date().iso(),
+    jobTitle: Joi.string().required(),
+    companyId: Joi.number().required(),
+    jobLocation: Joi.string().required(),
+    jobLink: Joi.string(),
+    resumeLink: Joi.string(),
+    jobWorkEnv: Joi.string(),
+    createdAt: Joi.date().iso(),
+    updatedAt: Joi.date().iso(),
 });
 
 // Actions validation schema
 const actionSchema = Joi.object({
-    user_id: Joi.number().required(),
-    job_id: Joi.number().required(),
-    action_type_id: Joi.number().required(),
-    created_at: Joi.date().iso(),
-    updated_at: Joi.date().iso(),
+    userId: Joi.number().required(),
+    jobId: Joi.number().required(),
+    actionTypeId: Joi.number().required(),
+    createdAt: Joi.date().iso(),
+    updatedAt: Joi.date().iso(),
 });
 
 module.exports = {

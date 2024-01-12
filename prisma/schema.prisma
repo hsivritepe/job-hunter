@@ -7,61 +7,101 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
-  id         Int       @id @default(autoincrement())
-  first_name String?   @db.VarChar(255)
-  last_name  String?   @db.VarChar(255)
-  email      String    @db.VarChar(255)
-  password   String    @db.VarChar(255)
-  created_at DateTime? @default(now())
-  updated_at DateTime? @updatedAt
-  actions    actions[]
-  jobs       jobs[]
+model Account {
+  id                 String    @id @default(uuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id])
+
+  @@unique([providerId, providerAccountId])
 }
 
-model companies {
-  id              Int        @id @default(autoincrement())
-  company_name    String?    @unique(map: "company_name") @db.VarChar(255)
-  company_website String?    @db.VarChar(255)
-  created_at      DateTime?  @default(now())
-  updated_at      DateTime?  @updatedAt
-  jobs            jobs[]     @relation("CompanyJobs")
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
 }
 
-model jobs {
-  id           Int         @id @default(autoincrement())
-  job_title    String?     @db.VarChar(255)
-  company_id   Int?
-  job_location String?     @db.VarChar(255)
-  job_link     String?     @db.VarChar(255)
-  resume_link  String?     @db.VarChar(255)
-  cover_link   String?     @db.VarChar(255)
-  job_work_env String?     @db.VarChar(255)
-  created_at   DateTime?   @default(now())
-  updated_at   DateTime?   @updatedAt
-  user         users       @relation(fields: [user_id], references: [id])
-  user_id      Int
-  actions      actions[]
-  company      companies?  @relation("CompanyJobs", fields: [company_id], references: [id])
+model User {
+  id            String    @id @default(uuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  Job           Job[]
+  Action        Action[]
 }
 
-model action_types {
-  id                Int       @id @default(autoincrement())
-  action_type_title String?   @db.VarChar(255)
-  action_type_desc  String?   @db.VarChar(255)
-  created_at        DateTime? @default(now())
-  updated_at        DateTime? @updatedAt
-  actions           actions[]
+model VerificationRequest {
+  id         String   @id @default(uuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
 }
 
-model actions {
-  id             Int          @id @default(autoincrement())
-  user_id        Int
-  job_id         Int
-  action_type_id Int
-  created_at     DateTime?    @default(now())
-  updated_at     DateTime?    @updatedAt
-  user           users        @relation(fields: [user_id], references: [id])
-  job            jobs         @relation(fields: [job_id], references: [id])
-  action_type    action_types @relation(fields: [action_type_id], references: [id])
+model Company {
+  id             String   @id @default(uuid())
+  companyName    String?  @unique(map: "companyName") @db.VarChar(255)
+  companyWebsite String?  @db.VarChar(255)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  jobs           Job[]    @relation("CompanyJobs")
+}
+
+model Job {
+  id          String   @id @default(uuid())
+  jobTitle    String?
+  companyId   String?
+  jobLocation String?
+  jobLink     String?
+  resumeLink  String?
+  coverLink   String?
+  jobWorkEnv  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  actions     Action[]
+  companies   Company? @relation("CompanyJobs", fields: [companyId], references: [id])
+}
+
+model Action {
+  id           String     @id @default(uuid())
+  userId       String
+  jobId        String
+  actionTypeId String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  user         User       @relation(fields: [userId], references: [id])
+  job          Job        @relation(fields: [jobId], references: [id])
+  actionTypes  ActionType @relation(fields: [actionTypeId], references: [id])
+}
+
+model ActionType {
+  id              String   @id @default(uuid())
+  actionTypeTitle String?
+  actionTypeDesc  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  actions         Action[]
 }

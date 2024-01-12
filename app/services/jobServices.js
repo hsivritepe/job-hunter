@@ -5,10 +5,10 @@ const prisma = new PrismaClient();
 
 export async function getAllJobs() {
     try {
-        const jobs = await prisma.jobs.findMany({
+        const jobs = await prisma.Job.findMany({
             include: {
                 user: true,
-                company: true,
+                companies: true,
             },
         });
         return {
@@ -23,7 +23,7 @@ export async function getAllJobs() {
             status: 'error',
             statusCode: 500,
             json: {
-                message: e.message,
+                message: `get all jobs error: ${e.message}`,
             },
         };
     }
@@ -33,7 +33,7 @@ export async function createJob(request) {
     try {
         const json = await request.json();
         const validated = await jobSchema.validateAsync(json);
-        const created = await prisma.jobs.create({
+        const created = await prisma.Job.create({
             data: validated,
         });
         return {
@@ -56,13 +56,13 @@ export async function createJob(request) {
 
 export async function getJob(id) {
     try {
-        const job = await prisma.jobs.findUnique({
+        const job = await prisma.Job.findUnique({
             where: {
-                id: parseInt(id),
+                id: id,
             },
             include: {
                 user: true,
-                company: true,
+                companies: true,
             },
         });
         return {
@@ -87,9 +87,9 @@ export async function updateJob(body, id) {
     try {
         const json = await body.json();
         const validated = await jobSchema.validateAsync(json);
-        const updated = await prisma.jobs.update({
+        const updated = await prisma.Job.update({
             where: {
-                id: parseInt(id),
+                id: id,
             },
             data: validated,
         });
@@ -113,9 +113,9 @@ export async function updateJob(body, id) {
 
 export async function deleteJob(id) {
     try {
-        const deleted = await prisma.jobs.delete({
+        const deleted = await prisma.Job.delete({
             where: {
-                id: parseInt(id),
+                id: id,
             },
         });
         return {
@@ -138,12 +138,12 @@ export async function deleteJob(id) {
 
 export async function getActionsByJobId(id) {
     try {
-        const actions = await prisma.actions.findMany({
+        const actions = await prisma.Action.findMany({
             where: {
-                job_id: parseInt(id),
+                jobId: id,
             },
             include: {
-                action_type: true,
+                actionTypes: true,
             },
         });
         return {
