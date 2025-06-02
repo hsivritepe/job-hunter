@@ -67,7 +67,10 @@ export default function Header() {
                             <hr />
                             <br />
                             <Image
-                                src={session?.session.user.image}
+                                src={
+                                    session.user?.image ||
+                                    '/default-avatar.svg'
+                                }
                                 width={48}
                                 height={48}
                                 className="rounded-full"
@@ -77,7 +80,7 @@ export default function Header() {
                                 href={'/api/auth/signout'}
                                 className="text-xs bg-black text-white px-2 py-1 rounded-lg"
                                 onClick={(e) => {
-                                    e.defaultPrevented();
+                                    e.preventDefault();
                                     signOut();
                                 }}
                             >
@@ -94,7 +97,7 @@ export default function Header() {
                                 href={'/api/auth/signin'}
                                 className="bg-black text-white px-4 py-2 rounded-lg"
                                 onClick={(e) => {
-                                    e.defaultPrevented();
+                                    e.preventDefault();
                                     signIn();
                                 }}
                             >
@@ -144,7 +147,10 @@ export default function Header() {
                                 <hr />
                                 <br />
                                 <Image
-                                    src={session?.session.user.image}
+                                    src={
+                                        session.user?.image ||
+                                        '/default-avatar.svg'
+                                    }
                                     width={64}
                                     height={64}
                                     className="rounded-full mb-4"
