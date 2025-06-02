@@ -18,7 +18,7 @@ export default function SignIn() {
         if (session) {
             router.push('/tilt');
         }
-    }, [session]);
+    }, [session, router]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -111,7 +111,7 @@ export default function SignIn() {
                     </button>
                 </div>
                 <p className="mt-4 text-center text-sm text-gray-600">
-                    Don't have an account?{' '}
+                    Don&apos;t have an account?{' '}
                     <Link
                         href="/auth/register"
                         className="text-blue-500 hover:text-blue-600"
