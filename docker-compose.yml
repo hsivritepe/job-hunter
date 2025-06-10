@@ -11,5 +11,14 @@ services:
         volumes:
             - mysql_data:/var/lib/mysql
 
+    job-hunter:
+        build: .
+        ports:
+            - '8002:3000'
+        stdin_open: true
+        tty: true
+        depends_on:
+            - db
+
 volumes:
     mysql_data:

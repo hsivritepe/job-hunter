@@ -170,10 +170,12 @@ export default function ActionTableList(jobId) {
                       .toLowerCase()
                       .includes(value.toLowerCase())
                 : '',
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.select(), 100);
-            }
+        filterDropdownProps: {
+            onOpenChange: (visible) => {
+                if (visible) {
+                    setTimeout(() => searchInput.select(), 100);
+                }
+            },
         },
     });
 

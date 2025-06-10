@@ -18,7 +18,6 @@ export default function JobTableList(compId) {
     const [jobs, setJobs] = useState([]);
     const [filteredJobs, setFilteredJobs] = useState([]);
 
-    let counter = 0;
     const columns = [
         {
             title: 'ID',
@@ -27,15 +26,16 @@ export default function JobTableList(compId) {
             width: '10%',
             ellipsis: true,
             responsive: ['sm'],
-            render: (name, record) => (
+            render: (name, record, index) => (
                 <Link
                     href={`/tilt/jobs/${record.id}`}
                     className="text-blue-800 font-medium"
                 >
-                    {++counter}
+                    {index + 1}
                 </Link>
             ),
             sorter: (a, b) => a.id - b.id,
+            sortDirections: ['ascend', 'descend'],
         },
         {
             title: 'Company Name',
@@ -52,9 +52,10 @@ export default function JobTableList(compId) {
                 </Link>
             ),
             sorter: (a, b) =>
-                a.companies.companyName.localeCompare(
-                    b.companies.companyName
+                (a.companies?.companyName || '').localeCompare(
+                    b.companies?.companyName || ''
                 ),
+            sortDirections: ['ascend', 'descend'],
         },
         {
             title: 'Job Title',
@@ -70,22 +71,44 @@ export default function JobTableList(compId) {
                     {name}
                 </Link>
             ),
-            sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
+            sorter: (a, b) =>
+                (a.jobTitle || '').localeCompare(b.jobTitle || ''),
+            sortDirections: ['ascend', 'descend'],
         },
         {
             title: 'Date Applied',
-            dataIndex: 'createdAt',
-            key: 'createdAt',
+            dataIndex: 'applicationDate',
+            key: 'applicationDate',
             ellipsis: true,
             responsive: ['sm'],
-            render: (date) => (
-                <span>
-                    {new Date(date).toLocaleString('en-US', {
-                        dateStyle: 'medium',
-                    })}
-                </span>
-            ),
-            sorter: (a, b) => a.createdAt.localeCompare(b.createdAt),
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => {
+                if (!a.applicationDate) return 1;
+                if (!b.applicationDate) return -1;
+                return (
+                    new Date(a.applicationDate) -
+                    new Date(b.applicationDate)
+                );
+            },
+            sortDirections: ['ascend', 'descend'],
+            render: (date) => {
+                if (!date) return 'N/A';
+                try {
+                    const dateObj = new Date(date);
+                    if (isNaN(dateObj.getTime())) {
+                        console.error('Invalid date:', date);
+                        return 'N/A';
+                    }
+                    return dateObj.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                    });
+                } catch (error) {
+                    console.error('Error formatting date:', error);
+                    return 'N/A';
+                }
+            },
         },
     ];
 
@@ -98,7 +121,7 @@ export default function JobTableList(compId) {
                     setFilteredJobs(response.data.jobs);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.error('Error fetching jobs:', error);
                 });
         } else {
             await axios
@@ -108,7 +131,7 @@ export default function JobTableList(compId) {
                     setFilteredJobs(response.data.job);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.error('Error fetching jobs:', error);
                 });
         }
     };
@@ -211,10 +234,12 @@ export default function JobTableList(compId) {
                       .toLowerCase()
                       .includes(value.toLowerCase())
                 : '',
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.select(), 100);
-            }
+        filterDropdownProps: {
+            onOpenChange: (visible) => {
+                if (visible) {
+                    setTimeout(() => searchInput.select(), 100);
+                }
+            },
         },
     });
 
@@ -223,7 +248,10 @@ export default function JobTableList(compId) {
             return {
                 ...col,
                 ...getColumnSearchProps(col.dataIndex),
-                key: col.key, // Add the key prop here
+                key: col.key,
+                defaultSortOrder: col.defaultSortOrder,
+                sortDirections: col.sortDirections,
+                sorter: col.sorter,
             };
         }
         return col;
@@ -240,13 +268,13 @@ export default function JobTableList(compId) {
                 </span>
             </div>
             <Table
-                key={jobs.id}
                 columns={columnsWithSearch}
                 dataSource={filteredJobs}
                 scroll={{ x: true }}
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky
                 className="py-2 sm:p-6 bg-white"
+                rowKey="id"
             />
         </>
     );

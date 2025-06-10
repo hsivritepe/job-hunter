@@ -14,7 +14,6 @@ export default function CompanyTableList() {
     const [companies, setCompanies] = useState([]);
     const [filteredCompanies, setFilteredCompanies] = useState([]);
 
-    let counter = 0;
     const columns = [
         {
             title: 'ID',
@@ -23,19 +22,20 @@ export default function CompanyTableList() {
             width: '10%',
             ellipsis: true,
             responsive: ['sm'],
-            render: (name, record) => (
+            render: (name, record, index) => (
                 <Link
                     href={`/tilt/companies/${record.id}`}
                     className="text-blue-800 font-medium"
                 >
-                    {++counter}
+                    {index + 1}
                 </Link>
             ),
             sorter: (a, b) => a.id - b.id,
+            sortDirections: ['ascend', 'descend'],
         },
         {
             title: 'Company Name',
-            dataIndex: 'companies.companyName',
+            dataIndex: 'companyName',
             key: 'companyName',
             ellipsis: true,
             responsive: ['xs', 'sm', 'md', 'lg', 'xl'],
@@ -44,13 +44,14 @@ export default function CompanyTableList() {
                     href={`/tilt/companies/${record.id}`}
                     className="text-blue-800 font-medium"
                 >
-                    {record.companyName || 'N/A'}
+                    {name || 'N/A'}
                 </Link>
             ),
             sorter: (a, b) =>
-                a.companies.companyName.localeCompare(
-                    b.companies.companyName
+                (a.companyName || '').localeCompare(
+                    b.companyName || ''
                 ),
+            sortDirections: ['ascend', 'descend'],
         },
         {
             title: 'Date Applied',
@@ -65,7 +66,9 @@ export default function CompanyTableList() {
                     })}
                 </span>
             ),
-            sorter: (a, b) => a.createdAt.localeCompare(b.createdAt),
+            sorter: (a, b) =>
+                new Date(a.createdAt) - new Date(b.createdAt),
+            sortDirections: ['ascend', 'descend'],
         },
     ];
 
@@ -73,11 +76,17 @@ export default function CompanyTableList() {
         axios
             .get('/api/companies')
             .then((response) => {
-                setCompanies(response.data.companies);
-                setFilteredCompanies(response.data.companies);
+                const companiesWithKeys = response.data.companies.map(
+                    (company) => ({
+                        ...company,
+                        key: company.id, // Ensure each company has a key
+                    })
+                );
+                setCompanies(companiesWithKeys);
+                setFilteredCompanies(companiesWithKeys);
             })
             .catch((error) => {
-                console.log(error);
+                console.error('Error fetching companies:', error);
             });
     };
 
@@ -179,10 +188,12 @@ export default function CompanyTableList() {
                       .toLowerCase()
                       .includes(value.toLowerCase())
                 : '',
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.select(), 100);
-            }
+        filterDropdownProps: {
+            onOpenChange: (visible) => {
+                if (visible) {
+                    setTimeout(() => searchInput.select(), 100);
+                }
+            },
         },
     });
 
@@ -191,7 +202,10 @@ export default function CompanyTableList() {
             return {
                 ...col,
                 ...getColumnSearchProps(col.dataIndex),
-                key: col.key, // Add the key prop here
+                key: col.key,
+                defaultSortOrder: col.defaultSortOrder,
+                sortDirections: col.sortDirections,
+                sorter: col.sorter,
             };
         }
         return col;
@@ -210,6 +224,7 @@ export default function CompanyTableList() {
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky
                 className="py-2 sm:p-6 bg-white"
+                rowKey="id"
             />
         </>
     );
