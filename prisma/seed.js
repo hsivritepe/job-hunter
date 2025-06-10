@@ -2407,129 +2407,91 @@ const newDesignData = [
 ];
 
 async function main() {
-    // Create admin user
-    const admin = await prisma.User.upsert({
-        where: {
-            email: 'admin@admin.com',
-        },
-        update: {},
-        create: {
-            name: 'Admin Admin',
-            email: 'admin@admin.com',
+    // Create a test user
+    console.log('Creating test user...');
+    const user = await prisma.User.create({
+        data: {
+            id: 'a877a6a9-9234-41b4-9c21-ed02b0a58b59',
+            name: 'hakan test',
+            email: 'hakan@test.com',
+            password:
+                '$2b$10$6EJZud/ll.Nb4hjqDyU0UO1WM5XW0SyP4CVum0I.pC0gWOqG/wYgq',
         },
     });
 
     // Create action types
+    console.log('Creating action types...');
     for (const actionTypeTitle of actionTypes) {
-        await prisma.actionType.create({
+        await prisma.ActionType.create({
             data: {
+                id: uuidv4(),
                 actionTypeTitle,
+                actionTypeDesc: actionTypeTitle,
             },
         });
     }
 
-    // Create companies with new design data
-    let simpleCounterComp = 0;
-    let simpleCounterAction = 0;
-    await Promise.all(
-        newDesignData.map(async (newData) => {
-            try {
-                await prisma.Company.create({
-                    data: {
-                        companyName: newData.company_name,
-                        companyWebsite: '',
-                    },
-                });
-            } catch (error) {
-                if (
-                    error.code === 'P2002' &&
-                    error.meta?.target?.includes('companyName')
-                ) {
-                    console.log(
-                        `Duplicate company name: 'your_company_name'. Skipping.`
-                    );
-                } else {
-                    throw error;
-                }
-            }
-        })
-    );
+    // Create sample jobs
+    console.log('Creating sample jobs...');
+    for (const job of jobs) {
+        // First, find or create the company
+        let company = await prisma.Company.findFirst({
+            where: { companyName: job.company_name },
+        });
 
-    await Promise.all(
-        newDesignData.map(async (newData) => {
-            try {
-                // Retrieve the company ID based on the company name
-                const company = await prisma.Company.findUnique({
-                    where: { companyName: newData.company_name },
-                });
+        if (!company) {
+            company = await prisma.Company.create({
+                data: {
+                    id: uuidv4(),
+                    companyName: job.company_name,
+                },
+            });
+        }
 
-                const user = await prisma.User.findUnique({
-                    where: { email: 'admin@admin.com' },
-                });
+        // Create the job
+        const newJob = await prisma.Job.create({
+            data: {
+                id: uuidv4(),
+                jobTitle: job.job_title,
+                jobLocation: '',
+                jobLink: job.job_link,
+                resumeLink: job.resume_link,
+                coverLink: job.cover_link,
+                jobWorkEnv: '',
+                companyId: company.id,
+                userId: user.id,
+            },
+        });
 
-                if (company) {
-                    // Create a job entry using the retrieved company ID
-                    await prisma.Job.create({
-                        data: {
-                            jobTitle: newData.job_title,
-                            companyId: company.id,
-                            jobLocation: newData.job_location,
-                            jobLink: newData.job_link,
-                            resumeLink: newData.resume_link,
-                            coverLink: newData.cover_link,
-                            jobWorkEnv: newData.job_work_env,
-                            createdAt: newData.created_at,
-                            userId: user.id,
-                        },
-                    });
-                } else {
-                    console.log(
-                        `Company not found for job entry: ${newData.job_title}. Skipping.`
-                    );
-                }
-            } catch (error) {
-                console.error(
-                    `Error creating job entry: ${error.message}`
-                );
-            }
-        })
-    );
+        // Get the "Apply to the job" action type
+        const applyActionType = await prisma.ActionType.findFirst({
+            where: {
+                actionTypeTitle: 'Apply to the job',
+            },
+        });
 
-    // Fetch all jobs from the Job table
-    const allJobs = await prisma.Job.findMany();
-    const user = await prisma.User.findUnique({
-        where: { email: 'admin@admin.com' },
-    });
-    const actionTypeData = await prisma.ActionType.findFirst({
-        where: { actionTypeTitle: 'Apply to the job' },
-    });
+        if (applyActionType) {
+            // Create an action for the job
+            await prisma.Action.create({
+                data: {
+                    id: uuidv4(),
+                    userId: user.id,
+                    jobId: newJob.id,
+                    actionTypeId: applyActionType.id,
+                    createdAt: new Date(), // Use current date for sample data
+                },
+            });
+        }
+    }
 
-    // Iterate through each job and create an entry in the Action table
-    await Promise.all(
-        allJobs.map(async (job) => {
-            try {
-                await prisma.Action.create({
-                    data: {
-                        actionTypeId: actionTypeData.id,
-                        jobId: job.id,
-                        userId: user.id, // Replace with the actual user ID
-                    },
-                });
-            } catch (error) {
-                console.error(
-                    `Error creating action entry: ${error.message}`
-                );
-            }
-        })
-    );
+    console.log('Done!');
 }
 
 main()
-    .then(async () => {
-        await prisma.$disconnect();
-    })
-    .catch(async (e) => {
+    .catch((e) => {
         console.error(e);
-        await prisma.$disconnect();
         process.exit(1);
+    })
+    .finally(async () => {
+        await prisma.$disconnect();
     });

@@ -2,8 +2,7 @@
 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { GetJobDetails } from '@/app/helpers/helpers';
-import { Descriptions, Breadcrumb } from 'antd';
+import { Descriptions } from 'antd';
 import Link from 'next/link';
 import JobActionsTableList from '@/components/JobActionsTableList';
 import MyBreadcrumb from '@/components/Breadcrumb';
@@ -11,41 +10,28 @@ import withAuth from '@/app/helpers/withAuth';
 
 function JobDetails({ params }) {
     const [jobData, setJobData] = useState(null);
+    const jobId = params.id;
 
     useEffect(() => {
         const getJobDetails = async () => {
             try {
-                const data = await axios.get(
-                    `/api/jobs/${params.id}`
-                );
+                const data = await axios.get(`/api/jobs/${jobId}`);
                 setJobData(data.data.job);
             } catch (error) {
                 console.error('Error fetching job details:', error);
             }
         };
         getJobDetails();
-    }, []);
+    }, [jobId]);
+
+    if (!jobData) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div>
             {jobData?.jobTitle && (
                 <>
-                    {/* <Breadcrumb className="pt-4 pb-8">
-                        <Breadcrumb.Item>
-                            <Link href="/">Home</Link>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>
-                            <Link
-                                href="/tilt/jobs"
-                                onClick={() => history.back()}
-                            >
-                                Jobs
-                            </Link>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>
-                            {jobData.jobTitle}
-                        </Breadcrumb.Item>
-                    </Breadcrumb> */}
                     <MyBreadcrumb
                         items={[
                             {
@@ -91,7 +77,7 @@ function JobDetails({ params }) {
                         <Descriptions.Item label="Job Link">
                             {jobData.jobLink ? (
                                 <Link
-                                    class="colored"
+                                    className="colored"
                                     href={jobData.jobLink}
                                     target="_blank"
                                 >
@@ -104,7 +90,7 @@ function JobDetails({ params }) {
                         <Descriptions.Item label="Resume Link">
                             {jobData.resumeLink ? (
                                 <Link
-                                    class="colored"
+                                    className="colored"
                                     href={jobData.resumeLink}
                                     target="_blank"
                                 >
@@ -117,7 +103,7 @@ function JobDetails({ params }) {
                         <Descriptions.Item label="Cover Link">
                             {jobData.coverLink ? (
                                 <Link
-                                    class="colored"
+                                    className="colored"
                                     href={jobData.coverLink}
                                     target="_blank"
                                 >
@@ -135,7 +121,7 @@ function JobDetails({ params }) {
             )}
             <br />
             <br />
-            <JobActionsTableList jobId={params.id} />
+            <JobActionsTableList jobId={jobId} />
         </div>
     );
 }

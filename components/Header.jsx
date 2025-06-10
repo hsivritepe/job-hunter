@@ -10,11 +10,12 @@ import Image from 'next/image';
 
 export default function Header() {
     const { data: session, status } = useSession();
-
     const [open, setOpen] = useState(false);
+
     const showDrawer = () => {
         setOpen(true);
     };
+
     const onClose = () => {
         setOpen(false);
     };
@@ -33,6 +34,7 @@ export default function Header() {
             </header>
         );
     }
+
     return (
         <header>
             <nav

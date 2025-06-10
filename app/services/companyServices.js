@@ -137,13 +137,36 @@ const getJobsByCompanyId = async (id) => {
             include: {
                 user: true,
                 companies: true,
+                actions: {
+                    include: {
+                        actionTypes: true,
+                    },
+                    orderBy: {
+                        createdAt: 'asc',
+                    },
+                },
             },
         });
+
+        // Add application date to each job
+        const jobsWithDates = jobs.map((job) => {
+            const applicationAction = job.actions.find(
+                (action) =>
+                    action.actionTypes.actionTypeTitle ===
+                    'Apply to the job'
+            );
+            return {
+                ...job,
+                applicationDate:
+                    applicationAction?.createdAt || job.createdAt,
+            };
+        });
+
         return {
             status: 'success',
             statusCode: 200,
             json: {
-                message: jobs,
+                message: jobsWithDates,
             },
         };
     } catch (e) {

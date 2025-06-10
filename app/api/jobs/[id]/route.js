@@ -1,8 +1,8 @@
 const { NextResponse } = require('next/server');
 const jobServices = require('../../../services/jobServices');
 
-export async function GET(request, params) {
-    const responseData = await jobServices.getJob(params.params.id);
+export async function GET(request, { params }) {
+    const responseData = await jobServices.getJob(params.id);
     if (responseData.status === 'success') {
         return NextResponse.json(
             { job: responseData.json.message },
@@ -16,10 +16,10 @@ export async function GET(request, params) {
     }
 }
 
-export async function PUT(request, params) {
+export async function PUT(request, { params }) {
     const responseData = await jobServices.updateJob(
         request,
-        params.params.id
+        params.id
     );
     if (responseData.status === 'success') {
         return NextResponse.json(
@@ -34,10 +34,8 @@ export async function PUT(request, params) {
     }
 }
 
-export async function DELETE(request, params) {
-    const responseData = await jobServices.deleteJob(
-        params.params.id
-    );
+export async function DELETE(request, { params }) {
+    const responseData = await jobServices.deleteJob(params.id);
     if (responseData.status === 'success') {
         return NextResponse.json(
             { job: responseData.json.message },

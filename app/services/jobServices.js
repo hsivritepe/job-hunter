@@ -9,16 +9,51 @@ export async function getAllJobs() {
             include: {
                 user: true,
                 companies: true,
+                actions: {
+                    include: {
+                        actionTypes: true,
+                    },
+                },
             },
         });
+
+        // Add application date to each job
+        const jobsWithDates = jobs.map((job) => {
+            // Find the "Apply to the job" action
+            const applicationAction = job.actions?.find(
+                (action) =>
+                    action.actionTypes?.actionTypeTitle ===
+                    'Apply to the job'
+            );
+
+            // Get the date from the action or fallback to job creation date
+            let applicationDate = null;
+            if (applicationAction?.createdAt) {
+                applicationDate = applicationAction.createdAt;
+            } else if (job.createdAt) {
+                applicationDate = job.createdAt;
+            }
+
+            // Convert to a simple date string if we have a date
+            const formattedDate = applicationDate
+                ? applicationDate.toISOString()
+                : null;
+
+            return {
+                ...job,
+                applicationDate: formattedDate,
+            };
+        });
+
         return {
             status: 'success',
             statusCode: 200,
             json: {
-                message: jobs,
+                message: jobsWithDates,
             },
         };
     } catch (e) {
+        console.error('Error in getAllJobs:', e);
         return {
             status: 'error',
             statusCode: 500,

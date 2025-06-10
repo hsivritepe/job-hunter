@@ -1,22 +1,28 @@
 # Dockerfile
 
-# Use an existing node alpine image as a base image.
-FROM node:20-alpine
+# Use standard Node image
+FROM node:20
 
 # Set the working directory.
 WORKDIR /app
 
-# Copy the package.json file.
-COPY package*.json .
+# Copy package files
+COPY package*.json ./
 
-# Install application dependencies.
+# Install dependencies
 RUN npm install
 
-# Copy the rest of the application files.
-COPY . .
+# Copy Prisma schema
+COPY prisma ./prisma/
+
+# Generate Prisma Client
+RUN npx prisma generate
+
+# Set environment variables
+ENV DATABASE_URL="mysql://root:root@db:3306/job-hunter-db"
 
 # Expose the port.
 EXPOSE 3000
 
 # Run the application.
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

@@ -19,6 +19,10 @@ services:
         tty: true
         depends_on:
             - db
+        volumes:
+            - .:/app
+            - /app/node_modules
+            - /app/.next
 
 volumes:
     mysql_data:

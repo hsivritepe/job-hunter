@@ -21,6 +21,7 @@ model Account {
   user               User      @relation(fields: [userId], references: [id])
 
   @@unique([providerId, providerAccountId])
+  @@index([userId], map: "Account_userId_fkey")
 }
 
 model Session {
@@ -32,6 +33,8 @@ model Session {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "Session_userId_fkey")
 }
 
 model User {
@@ -44,9 +47,9 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
-  sessions      Session[]
-  Job           Job[]
   Action        Action[]
+  Job           Job[]
+  sessions      Session[]
 }
 
 model VerificationRequest {
@@ -74,16 +77,19 @@ model Job {
   jobTitle    String?
   companyId   String?
   jobLocation String?
-  jobLink     String?
-  resumeLink  String?
-  coverLink   String?
+  jobLink     String?  @db.Text
+  resumeLink  String?  @db.Text
+  coverLink   String?  @db.Text
   jobWorkEnv  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id])
   userId      String
   actions     Action[]
   companies   Company? @relation("CompanyJobs", fields: [companyId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([companyId], map: "Job_companyId_fkey")
+  @@index([userId], map: "Job_userId_fkey")
 }
 
 model Action {
@@ -93,14 +99,18 @@ model Action {
   actionTypeId String
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  user         User       @relation(fields: [userId], references: [id])
-  job          Job        @relation(fields: [jobId], references: [id])
   actionTypes  ActionType @relation(fields: [actionTypeId], references: [id])
+  job          Job        @relation(fields: [jobId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@index([actionTypeId], map: "Action_actionTypeId_fkey")
+  @@index([jobId], map: "Action_jobId_fkey")
+  @@index([userId], map: "Action_userId_fkey")
 }
 
 model ActionType {
   id              String   @id @default(uuid())
-  actionTypeTitle String?
+  actionTypeTitle String?  @unique
   actionTypeDesc  String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
